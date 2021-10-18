@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/styles.css}" >
+    </th:block>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Chats</title>
+</head>
+<body>
+
+<header class="welcome-header">
+    <h1 class="welcome-header__title">본인인증</h1>
+    <p class="welcome-header__text">
+        push 알림으로 간 인증번호 6자리를 입력해주세요.
+    </p>
+</header>
+
+<form id="login-form" action="friends.html" method="get">
+    <input name="serialNo" type="number" placeholder="인증번호를 입력해주세요." />
+    <input type="button" value="확인" />
+    <input type="button" value="인증번호 재발송" />
+</form>
+
+<div id="no-mobile">
+    <span>Your screen is too big ㅠㅠ</span>
+</div>
+
+<script
+        src="https://kit.fontawesome.com/6478f529f2.js"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>

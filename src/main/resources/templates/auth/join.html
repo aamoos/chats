@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="fragment/config :: configFragment" ></th:block>
+<head>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/styles.css}" >
+    </th:block>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Chats</title>
+</head>
+<body>
+
+<header class="welcome-header">
+    <h1 class="welcome-header__title">Chats 회원가입</h1>
+</header>
+
+<form id="login-form" th:object="${users}">
+    <input th:field="*{userId}" type="text" placeholder="이메일을 입력해주세요." />
+    <span style="color:red;" class="err" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" />
+    <br>
+
+    <input th:field="*{password}" type="password" placeholder="패스워드를 입력해주세요." />
+    <span style="color:red;" class="err" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" />
+    <br>
+
+    <input th:field="*{handPhoneNo}" type="text" placeholder="핸드폰번호를 입력해주세요." />
+    <span style="color:red;" class="err" th:if="${#fields.hasErrors('handPhoneNo')}" th:errors="*{handPhoneNo}" />
+    <br>
+
+    <input th:field="*{userName}" type="text" placeholder="이름을 입력해주세요." />
+    <span style="color:red;" class="err" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" />
+    <br>
+
+    <input type="button" onclick="joinCheck()" value="Join" />
+</form>
+
+<div id="no-mobile">
+    <span>Your screen is too big ㅠㅠ</span>
+</div>
+
+<script
+        src="https://kit.fontawesome.com/6478f529f2.js"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
+
+<script th:inline="javascript">
+    function joinCheck(){
+        var users = $('#login-form').serialize();
+        console.log(users);
+        $.ajax({
+            url: "/join",
+            data: users,
+            type:"POST",
+            cache: false
+        }).done(function (fragment) {
+            if ($(fragment).find("#login-form").prevObject["0"].length > 0) {
+                $("#login-form").replaceWith(fragment);
+            }
+            else{
+                $("input[type=text]").val("");
+                $('.err').text("");
+            }
+        });
+    }
+</script>

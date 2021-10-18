@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Chats</title>
+</head>
+<body>
+
+<header class="welcome-header">
+    <h1 class="welcome-header__title">Chats에 오신것을 환영합니다.</h1>
+    <p class="welcome-header__text">
+        이메일 또는 핸드폰번호를 입력해주세요.
+    </p>
+</header>
+
+<form action="friends.html" method="get" id="login-form">
+    <input name="username" type="text" placeholder="이메일을 입력해주세요." />
+    <input name="password" type="password" placeholder="패스워드를 입력해주세요." />
+    <input type="button" value="Log In" />
+    <a href="/join">회원가입</a>
+    <br>
+    <a href="#">아이디 또는 패스워드 찾기</a>
+</form>
+
+<div id="no-mobile">
+    <span>Your screen is too big ㅠㅠ</span>
+</div>
+
+<script
+        src="https://kit.fontawesome.com/6478f529f2.js"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
