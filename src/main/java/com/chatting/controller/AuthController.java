@@ -27,8 +27,6 @@ public class AuthController {
     @GetMapping("/")
     public String login(HttpServletRequest req){
 
-        System.out.println("token : " + req.getParameter("token"));
-
         return "auth/login";
     }
 

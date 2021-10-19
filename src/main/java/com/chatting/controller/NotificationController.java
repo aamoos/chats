@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class NotificationController {
 
@@ -42,5 +44,17 @@ public class NotificationController {
         }
 
         return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 푸시토큰 받아오는처리?
+     * @param req
+     * @return
+     */
+    @PostMapping("/putPushToken")
+    public String login(HttpServletRequest req){
+        System.out.println(req.getParameter("Token"));
+        System.out.println(req.getParameter("token"));
+        return "auth/login";
     }
 }
