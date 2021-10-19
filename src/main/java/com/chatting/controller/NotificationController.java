@@ -1,5 +1,6 @@
 package com.chatting.controller;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -47,14 +48,15 @@ public class NotificationController {
     }
 
     /**
-     * 푸시토큰 받아오는처리?
-     * @param req
+     * 푸시토큰 받아오는처리
+     * @param params
      * @return
      */
     @PostMapping("/putPushToken")
-    public String login(HttpServletRequest req){
-        System.out.println(req.getParameter("Token"));
-        System.out.println(req.getParameter("token"));
+    public String login(@RequestBody Map<String, Object> params){
+
+        System.out.println(params.get("token"));
+
         return "auth/login";
     }
 }
