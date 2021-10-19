@@ -46,13 +46,4 @@ public class NotificationController {
 
         return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
     }
-
-    @PostMapping("/putPushToken")
-    public String login(@RequestParam(value = "token") String token, HttpServletRequest req){
-
-        System.out.println("token : " + token);
-        System.out.println(req.getParameterNames());
-
-        return "auth/login";
-    }
 }
