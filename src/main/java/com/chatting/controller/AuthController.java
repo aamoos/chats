@@ -26,8 +26,12 @@ public class AuthController {
      */
     @GetMapping("/")
     public String login(HttpServletRequest req){
-        System.out.println(req.getParameter("token"));
         return "auth/login";
+    }
+
+    @PostMapping("/")
+    public void getPushToken(HttpServletRequest req){
+        System.out.println("token : " + req.getParameter("token"));
     }
 
     /**
