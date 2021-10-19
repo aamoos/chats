@@ -3,11 +3,10 @@ package com.chatting.controller;
 import com.chatting.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import javax.validation.Valid;
 
 /**
@@ -42,6 +41,9 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             return "auth/join :: #login-form";
         }
+
+        //push 발송
+
 
         return "auth/joinCheck::#login-form";
     }
