@@ -30,6 +30,11 @@ public class AuthController {
         return "auth/login";
     }
 
+    @PostMapping("/")
+    public void getPush(HttpServletRequest req){
+        System.out.println("token : " + req.getParameter("token"));
+    }
+
     /**
      * 회원가입 화면
      * @return
