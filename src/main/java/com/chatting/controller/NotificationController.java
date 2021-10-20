@@ -1,5 +1,6 @@
 package com.chatting.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -14,6 +15,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 public class NotificationController {
@@ -23,9 +25,14 @@ public class NotificationController {
     @Autowired
     AndroidPushNotificationsService androidPushNotificationsService;
 
-    @GetMapping(value = "/send")
-    public @ResponseBody ResponseEntity<String> send() throws JSONException, InterruptedException  {
-        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson();
+    @PostMapping(value = "/pushSend")
+    public @ResponseBody ResponseEntity<String> send(@RequestBody Map<String, Object> params) throws Exception {
+
+        System.out.println("title : " + params.get("title"));
+        System.out.println("body : " + params.get("body"));
+        System.out.println("token : " + params.get("token"));
+
+        String notifications = AndroidPushPeriodicNotifications.PeriodicNotificationJson(params);
 
         HttpEntity<String> request = new HttpEntity<>(notifications);
 

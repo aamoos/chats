@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -33,4 +32,14 @@ public class Users {
     //사용자 이름
     @NotBlank(message="이름은 필수 항목입니다.")
     private String userName;
+
+    private String useYn;
+
+    public Users(String userId, String password, String handPhoneNo, String userName, String useYn) {
+        this.userId = userId;
+        this.password = password;
+        this.handPhoneNo = handPhoneNo;
+        this.userName = userName;
+        this.useYn = useYn;
+    }
 }

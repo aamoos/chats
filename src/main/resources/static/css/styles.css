@@ -29,3 +29,16 @@ body {
 .main-screen {
   padding: 0px var(--horizontal-space);
 }
+
+input:focus{
+	outline:none;
+}
+
+html {
+    /* 화면을 길게 누르고 있을때 뜨는 팝업이나 액션시트를 제어 */
+    -webkit-touch-callout:none;
+    /* 텍스트나 이미지를 선택할 수 있게 하는 여부를 제어 */
+    -webkit-user-select:none;
+    /* 링크를 터치했을때 나오는 기본 영역의 색상을 제어 */
+    -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+}
