@@ -34,12 +34,4 @@ public class Users {
     private String userName;
 
     private String useYn;
-
-    public Users(String userId, String password, String handPhoneNo, String userName, String useYn) {
-        this.userId = userId;
-        this.password = password;
-        this.handPhoneNo = handPhoneNo;
-        this.userName = userName;
-        this.useYn = useYn;
-    }
 }

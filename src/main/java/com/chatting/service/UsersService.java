@@ -63,12 +63,41 @@ public class UsersService {
             String handPhoneNo = ((Users) session.getAttribute("users")).getHandPhoneNo();
             String userName = ((Users) session.getAttribute("users")).getUserName();
 
-            Users users = new Users(userId, password, handPhoneNo, userName, "Y");
+
+            Users users = new Users();
+            users.setUserId(userId);
+            users.setPassword(password);
+            users.setHandPhoneNo(handPhoneNo);
+            users.setUserName(userName);
+            users.setUseYn("Y");
             //회원 등록
             usersRepository.save(users);
 
             result.put("resultCode", "success");
             result.put("resultMsg", "회원이 정상적으로 등록되었습니다.");
+        }
+
+        return result;
+    }
+
+    /**
+     * 아이디 중복체크
+     * @param users
+     * @return
+     */
+    public Map<String, Object> duplicateCheck(Users users){
+        Map<String, Object> result = new HashMap<String, Object>();
+        Users selectUser = usersRepository.findByUserIdOrHandPhoneNoAndUseYn(users.getUserId(), users.getHandPhoneNo(), "Y");
+
+        //생성가능
+        if(selectUser == null){
+            result.put("resultCode", "success");
+        }
+
+        //생성불가능
+        else{
+            result.put("resultCode", "fail");
+            result.put("resultMsg", "해당 아이디로 가입한 아이디 또는 핸드폰번호가 있습니다.");
         }
 
         return result;

@@ -64,13 +64,23 @@ public class AuthController {
             return "auth/join :: #login-form";
         }
 
-        //push 발송
+        //session 설정
         session.setAttribute("users", users);
 
         System.out.println(session.getAttribute("users"));
         System.out.println(session.getAttribute("token"));
 
         return "auth/joinCheck";
+    }
+
+    /**
+     * 중복체크
+     * @param users
+     */
+    @PostMapping("/duplicateCheck")
+    @ResponseBody
+    public Map<String, Object> duplicateCheck(@RequestBody Users users){
+        return usersService.duplicateCheck(users);
     }
 
     /**

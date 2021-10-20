@@ -35,7 +35,7 @@
     <span style="color:red;" class="err" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" />
     <br>
 
-    <input type="button" onclick="joinCheck()" value="Join" />
+    <input type="button" onclick="duplicateCheck()" value="Join" />
 </form>
 
 <script
@@ -46,6 +46,42 @@
 </html>
 
 <script th:inline="javascript">
+
+    //중복 체크
+    function duplicateCheck(){
+
+        var params = {
+              userId : $("#userId").val()
+             ,handPhoneNo : $("#handPhoneNo").val()
+        }
+
+        console.log(params);
+        $.ajax({
+	         type : 'POST'
+	        ,url : "/duplicateCheck"
+	        ,dataType : 'json'
+	        ,data : JSON.stringify(params)
+	        ,contentType: 'application/json'
+	        ,success : function(result) {
+
+                //중복회원일경우
+                if(result.resultCode == "fail"){
+                    alert(result.resultMsg);
+                }
+
+                //중복 회원이 아닐경우
+                else{
+                    joinCheck();
+                }
+
+	        },
+	        error: function(request, status, error) {
+
+	        }
+	    })
+    }
+
+    //벨리데이션 체크
     function joinCheck(){
         var users = $('#login-form').serialize();
         console.log(users);
