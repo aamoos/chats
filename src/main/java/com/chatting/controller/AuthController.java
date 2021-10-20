@@ -4,9 +4,7 @@ import com.chatting.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,8 +29,10 @@ public class AuthController {
     }
 
     @PostMapping("/")
-    public void getPush(HttpServletRequest req){
-        System.out.println("token : " + req.getParameter("token"));
+    @ResponseBody
+    public String getPush(@RequestParam String token){
+        System.out.println("token : " + token);
+        return token;
     }
 
     /**
