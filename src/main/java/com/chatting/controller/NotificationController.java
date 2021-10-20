@@ -46,4 +46,10 @@ public class NotificationController {
 
         return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping("/getPushToken")
+    public String getPush(@RequestParam("token") String token){
+        System.out.println("token : " + token);
+        return token;
+    }
 }

@@ -28,13 +28,6 @@ public class AuthController {
         return "auth/login";
     }
 
-    @PostMapping("/")
-    @ResponseBody
-    public String getPush(@RequestParam String token){
-        System.out.println("token : " + token);
-        return token;
-    }
-
     /**
      * 회원가입 화면
      * @return
