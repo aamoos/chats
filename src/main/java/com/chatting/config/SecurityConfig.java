@@ -2,7 +2,9 @@ package com.chatting.config;
 
 import com.chatting.common.Constants;
 import com.chatting.common.Url;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,19 +16,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * Security 설정 클래스
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private LoginSucessHandler loginSucessHandler;
-
-    @Autowired
-    private LoginFailureHandler loginFailureHandler;
+    private final LoginSucessHandler loginSucessHandler;
+    private final LoginFailureHandler loginFailureHandler;
+    private final DataSource dataSource;
 
     /* configure */
     @Override
@@ -42,6 +47,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        /* 자동 로그인 설정 */
+        http.rememberMe()
+                .key("hayden") //쿠키에 사용되는 값을 암호화하기 위한 키(key)값
+                .tokenRepository(tokenRepository()) //DataSource 추가
+                .tokenValiditySeconds(604800); //토큰 유지 시간(초단위) - 일주일
+
+//        http.rememberMe()
+//                .userDetailsService(accountService)
+//                .tokenRepository(tokenRepository());
 
         http
                 .csrf().disable()
@@ -74,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .expiredUrl(Url.AUTH.LOGIN)		 	//세션 만료시 이동할 페이지
                 .sessionRegistry(sesionRegistry())
                 .maxSessionsPreventsLogin(true);	//동시 로그인 차단, false인 경우 기존 세션 만료
+
     }
 
     @Override
@@ -98,6 +114,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SessionRegistry sesionRegistry() {
         return new SpringSecuritySessionRegistImpl();
+    }
+
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        // JDBC 기반의 tokenRepository 구현체
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource); // dataSource 주입
+        return jdbcTokenRepository;
     }
 
     /* 관리자 아이디 파라미터 이름 */
