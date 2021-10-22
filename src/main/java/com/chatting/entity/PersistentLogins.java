@@ -1,22 +1,31 @@
 package com.chatting.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Timestamp;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+@Table(name = "persistent_logins")
 @Entity
+@Getter
+@Setter
 public class PersistentLogins {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long persistentIdx;
-    private String username;
+    @Column(length = 64)
     private String series;
-    private String token;
-    private LocalDateTime lastUsed;
 
+    @Column(nullable = false, length = 64)
+    private String username;
+
+    @Column(nullable = false, length = 64)
+    private String token;
+
+    @Column(name = "last_used", nullable = false, length = 64)
+    private LocalDateTime lastUsed;
 
 }

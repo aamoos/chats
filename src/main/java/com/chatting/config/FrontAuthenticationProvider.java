@@ -62,13 +62,13 @@ public class FrontAuthenticationProvider implements AuthenticationProvider{
                 List<UsersAuthority> authorities = new ArrayList<>();
 
                 //권한 조회
-                UsersAuthority getUserAuthorities = userAuthorityRepository.findByUserId(id);
+                List<UsersAuthority> getUserAuthorities = userAuthorityRepository.findByUserId(id);
 
                 log.info("getUserAuthorities={}",getUserAuthorities);
 
                 //권한이 있을경우
                 if(getUserAuthorities != null) {
-                    authorities.add(getUserAuthorities);
+                    authorities.add(getUserAuthorities.get(0));
                     userInfo.setAuthorities(authorities);
                 }
 

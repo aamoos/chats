@@ -2,6 +2,7 @@ package com.chatting.config;
 
 import com.chatting.common.Constants;
 import com.chatting.common.Url;
+import com.chatting.service.CustomUsersDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final LoginSucessHandler loginSucessHandler;
     private final LoginFailureHandler loginFailureHandler;
     private final DataSource dataSource;
+    private final CustomUsersDetailService customUsersDetailService;
 
     /* configure */
     @Override
@@ -50,13 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         /* 자동 로그인 설정 */
         http.rememberMe()
-                .key("hayden") //쿠키에 사용되는 값을 암호화하기 위한 키(key)값
+                .key("jpa") //쿠키에 사용되는 값을 암호화하기 위한 키(key)값
+                .rememberMeParameter("remember-me")
+                .userDetailsService(customUsersDetailService)
                 .tokenRepository(tokenRepository()) //DataSource 추가
                 .tokenValiditySeconds(604800); //토큰 유지 시간(초단위) - 일주일
-
-//        http.rememberMe()
-//                .userDetailsService(accountService)
-//                .tokenRepository(tokenRepository());
 
         http
                 .csrf().disable()

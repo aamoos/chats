@@ -19,4 +19,8 @@ public interface UsersRepository extends CrudRepository<Users, Long> {
 
     //아이디 찾기
     Users findByHandPhoneNoAndUsernameAndUseYn(String handPhoneNo, String username, String useYn);
+
+    //이름으로 찾기
+    Users findByUserId(String userId);
+
 }

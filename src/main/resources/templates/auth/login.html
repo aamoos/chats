@@ -22,7 +22,7 @@
     </p>
 </header>
 
-<form action="friends.html" method="get" id="login-form">
+<form id="login-form">
     <input type="text" id="loginId" name="loginId" placeholder="이메일을 입력해주세요." onkeyup="enterkey()" />
     <input type="password" id="loginPw" name="loginPw" placeholder="패스워드를 입력해주세요." onkeyup="enterkey()" />
     <input type="button" value="Log In" onclick="loginSubmit()" />
@@ -53,6 +53,7 @@
         var params = {
              'userId' : $.trim($("#loginId").val())
             ,'password' : $("#loginPw").val()
+            ,'remember-me' : $("#rememberMe").val()
         }
 
         console.log(params);
