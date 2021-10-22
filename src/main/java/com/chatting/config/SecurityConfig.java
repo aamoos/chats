@@ -50,15 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        /* 자동 로그인 설정 */
-        http.rememberMe()
+        http
+                .rememberMe()
                 .key("jpa") //쿠키에 사용되는 값을 암호화하기 위한 키(key)값
                 .rememberMeParameter("remember-me")
                 .userDetailsService(customUsersDetailService)
                 .tokenRepository(tokenRepository()) //DataSource 추가
-                .tokenValiditySeconds(604800); //토큰 유지 시간(초단위) - 일주일
-
-        http
+                .tokenValiditySeconds(604800) //토큰 유지 시간(초단위) - 일주일
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/file-download/**").permitAll()            //파일 다운로드
@@ -89,6 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .expiredUrl(Url.AUTH.LOGIN)		 	//세션 만료시 이동할 페이지
                 .sessionRegistry(sesionRegistry())
                 .maxSessionsPreventsLogin(true);	//동시 로그인 차단, false인 경우 기존 세션 만료
+
 
     }
 
