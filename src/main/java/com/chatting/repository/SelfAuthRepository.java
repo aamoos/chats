@@ -1,5 +1,6 @@
 package com.chatting.repository;
 
+import com.chatting.dto.SelfAuthDto;
 import com.chatting.entity.SelfAuth;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

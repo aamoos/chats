@@ -1,7 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="fragment/config :: configFragment" ></th:block>
 <head>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/styles.css}" >
+    </th:block>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to Chats</title>
@@ -11,17 +18,19 @@
 <header class="welcome-header">
     <h1 class="welcome-header__title">Chats에 오신것을 환영합니다.</h1>
     <p class="welcome-header__text">
-        이메일 또는 핸드폰번호를 입력해주세요.
+        이메일과 패스워드를 입력해주세요.
     </p>
 </header>
 
 <form action="friends.html" method="get" id="login-form">
-    <input name="username" type="text" placeholder="이메일을 입력해주세요." />
-    <input name="password" type="password" placeholder="패스워드를 입력해주세요." />
+    <input type="text" id="loginId" name="loginId" placeholder="이메일을 입력해주세요." onkeyup="enterkey()" />
+    <input type="password" id="loginPw" name="loginPw" placeholder="패스워드를 입력해주세요." onkeyup="enterkey()" />
     <input type="button" value="Log In" onclick="loginSubmit()" />
-    <a href="/join">회원가입</a>
+    <a href="/auth/join">회원가입</a>
     <br>
-    <a href="#">아이디 또는 패스워드 찾기</a>
+    <a href="/auth/findIdCheck">아이디 찾기</a>
+    <br>
+    <a href="/auth/findPwdCheck">패스워드 찾기</a>
 </form>
 
 <script
@@ -32,8 +41,44 @@
 </html>
 
 <script th:inline="javascript">
+
+     //로그인 submit
     function loginSubmit(){
-        location.href="/main";
+
+        var params = {
+             'userId' : $.trim($("#loginId").val())
+            ,'password' : $("#loginPw").val()
+        }
+
+        console.log(params);
+
+        $.ajax({
+             type : 'POST'
+            ,url : '/auth/login-proc'
+            ,dataType : 'json'
+            ,data : params
+            ,success : function(result) {
+                console.log(result);
+                if(result.resultCode != "00"){
+                    alert(result.resultMessage);
+                }
+
+                else{
+                    location.href=result.targetUrl;
+                }
+            },
+
+            error: function(request, status, error) {
+
+            }
+        })
+    }
+
+    function enterkey() {
+        if (window.event.keyCode == 13) {
+            // 엔터키가 눌렸을 때
+            loginSubmit()
+        }
     }
 
 

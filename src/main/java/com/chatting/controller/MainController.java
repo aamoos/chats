@@ -1,5 +1,6 @@
 package com.chatting.controller;
 
+import com.chatting.common.Url;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +17,17 @@ public class MainController {
      * 메인
      * @return
      */
-    @GetMapping("/main")
+    @GetMapping(Url.MAIN.MAIN)
     public String main(){
-        return "chat/main";
+        return Url.MAIN.MAIN_HTML;
     }
 
     /**
      * 채팅
      */
-    @GetMapping("/chat")
+    @GetMapping(Url.MAIN.CHAT)
     public String chat(){
-        return "chat/chat";
+        return Url.MAIN.CHAT_HTML;
     }
 
 }

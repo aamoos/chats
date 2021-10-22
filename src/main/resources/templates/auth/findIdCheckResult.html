@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="fragment/config :: configFragment" ></th:block>
+<head>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/styles.css}" >
+    </th:block>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Chats</title>
+</head>
+<body>
+
+<header class="welcome-header" id="joinHeader">
+    <h1 class="welcome-header__title">Chats 아이디 찾기</h1>
+    <p class="welcome-header__text">
+        아이디 : [[${userId}]]
+    </p>
+</header>
+
+<form id="login-form">
+
+    <input type="button" onclick="location.href='/auth/login'" value="로그인" />
+    <input type="button" onclick="location.href='/auth/findPwdCheck'" value="패스워드 찾기" />
+</form>
+
+<script
+        src="https://kit.fontawesome.com/6478f529f2.js"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
+
+<script th:inline="javascript">
+
+</script>

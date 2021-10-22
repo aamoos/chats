@@ -1,18 +1,21 @@
 package com.chatting.controller;
 
-import com.chatting.entity.SelfAuth;
-import com.chatting.entity.Users;
+import com.chatting.common.Url;
+import com.chatting.dto.IdCheckDto;
+import com.chatting.dto.PwdCheckDto;
+import com.chatting.dto.SelfAuthDto;
+import com.chatting.dto.UsersDto;
 import com.chatting.service.UsersService;
+import com.chatting.validator.UsersDtoValidator;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.patterns.IToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * 로그인 controller
@@ -23,12 +26,13 @@ import java.util.Optional;
 public class AuthController {
 
     private final UsersService usersService;
+    private final UsersDtoValidator usersDtoValidator;
 
     /**
      * 로그인 화면
      * @return
      */
-    @GetMapping("/")
+    @GetMapping(Url.AUTH.LOGIN)
     public String login(HttpServletRequest req, HttpSession session){
         System.out.println("token : " + req.getParameter("token"));
         String token = req.getParameter("token");
@@ -38,87 +42,140 @@ public class AuthController {
         }
 
         session.setAttribute("token", token);
-        return "auth/login";
+        return Url.AUTH.LOGIN_HTML;
     }
 
     /**
      * 회원가입 화면
      * @return
      */
-    @GetMapping("/join")
-    public String join(Users users){
-        return "auth/join";
+    @GetMapping(Url.AUTH.JOIN)
+    public String join(Model model){
+        model.addAttribute("usersDto", new UsersDto());
+        return Url.AUTH.JOIN_HTML;
     }
 
     /**
-     * 회원가입 버튼 클릭할경우 validation
-     * @param users
-     * @param bindingResult
+     * 회원가입
+     * @param usersDto
+     * @param result
      * @param session
      * @return
      */
-    @PostMapping("/join")
-    public String joinSubmit(@Valid Users users, BindingResult bindingResult, HttpSession session){
-        System.out.println("userId : " + users.getUserId());
-        if (bindingResult.hasErrors()) {
-            return "auth/join :: #login-form";
+    @PostMapping(Url.AUTH.JOIN)
+    public String joinSubmit(@Valid UsersDto usersDto, BindingResult result, HttpSession session){
+
+        usersDtoValidator.validate(usersDto, result);
+        System.out.println(result.getAllErrors());
+        if (result.hasErrors()) {
+            return Url.AUTH.JOIN_HTML;
         }
 
+        System.out.println("userId : " + usersDto.getUserId());
+
         //session 설정
-        session.setAttribute("users", users);
+        session.setAttribute("userId", usersDto.getUserId());
+        session.setAttribute("password", usersDto.getPassword());
+        session.setAttribute("handPhoneNo", usersDto.getHandPhoneNo());
+        session.setAttribute("userName", usersDto.getUsername());
 
-        System.out.println(session.getAttribute("users"));
-        System.out.println(session.getAttribute("token"));
-
-        return "auth/joinCheck";
+        return Url.AUTH.JOIN_CHECK_HTML;
     }
 
     /**
      * 중복체크
-     * @param users
+     * @param usersDto
+     * @return
      */
-    @PostMapping("/duplicateCheck")
+    @PostMapping(Url.AUTH.DUPLICATE_CHECK)
     @ResponseBody
-    public Map<String, Object> duplicateCheck(@RequestBody Users users){
-        return usersService.duplicateCheck(users);
+    public Map<String, Object> duplicateCheck(@RequestBody UsersDto usersDto){
+        return usersService.duplicateCheck(usersDto);
     }
 
     /**
      * 인증번호 저장
-     * @param selfAuth
+     * @param SelfAuthDto
      */
-    @PostMapping("/saveSerialNo")
+    @PostMapping(Url.AUTH.SAVE_SERIAL_NO)
     @ResponseBody
-    public void saveSerialNo(@RequestBody SelfAuth selfAuth){
-
-        System.out.println("serialNo : " + selfAuth.getSerialNo());
-        System.out.println("userId : " + selfAuth.getUserId());
+    public void saveSerialNo(@RequestBody SelfAuthDto SelfAuthDto){
 
         //기존 serialNo 삭제
-        usersService.deleteSerialNo(selfAuth.getUserId());
+        usersService.deleteSerialNo(SelfAuthDto.getUserId());
 
         //새로운 serialNo 저장
-        usersService.saveSerialNo(selfAuth);
+        usersService.saveSerialNo(SelfAuthDto);
     }
 
     /**
      * 인증번호 체크 맞으면 회원가입 처리
-     * @param selfAuth
+     * @param SelfAuthDto
      * @return
      */
-    @PostMapping("/serialNoCheck")
+    @PostMapping(Url.AUTH.SERIAL_NO_CHECK)
     @ResponseBody
-    public Map<String, Object> serialNoCheck(@RequestBody SelfAuth selfAuth, HttpSession httpSession){
-        return usersService.serialNoCheck(selfAuth, httpSession);
+    public Map<String, Object> serialNoCheck(@RequestBody SelfAuthDto SelfAuthDto, HttpSession httpSession){
+        return usersService.serialNoCheck(SelfAuthDto, httpSession);
     }
-
 
     /**
-     * 인증번호 확인 화면
+     * 아이디 찾기
+     * @param model
      * @return
      */
-    @GetMapping("/joinCheck")
-    public String joinCheck(){
-        return "auth/joinCheck";
+    @GetMapping(Url.AUTH.FIND_ID_CHECK)
+    public String findIdCheck(Model model){
+        model.addAttribute("idCheckDto", new UsersDto());
+        return Url.AUTH.FIND_ID_CHECK_HTML;
     }
+
+    @PostMapping(Url.AUTH.FIND_ID_CHECK)
+    public String findIdCheckSubmit(@Valid IdCheckDto idCheckDto, BindingResult result, HttpSession session, Model model){
+
+        if (result.hasErrors()) {
+            return Url.AUTH.FIND_ID_CHECK_HTML;
+        }
+
+        model.addAttribute("userId", usersService.findByUserId(idCheckDto));
+
+        return Url.AUTH.FIND_ID_CHECK_RESULT_HTML;
+    }
+
+    /**
+     * 비밀번호 찾기
+     * @param model
+     * @return
+     */
+    @GetMapping(Url.AUTH.FIND_PWD_CHECK)
+    public String finPwdCheck(Model model){
+        model.addAttribute("pwdCheckDto", new PwdCheckDto());
+        return Url.AUTH.FIND_PWD_CHECK_HTML;
+    }
+
+    @PostMapping(Url.AUTH.FIND_PWD_CHECK)
+    public String findPwdCheckSubmit(@Valid PwdCheckDto pwdCheckDto, BindingResult result, HttpSession session, Model model){
+
+        if (result.hasErrors()) {
+            return Url.AUTH.FIND_PWD_CHECK_HTML;
+        }
+
+        model.addAttribute("userId", pwdCheckDto.getUserId());
+
+        return Url.AUTH.FIND_PWD_CHECK_RESULT_HTML;
+    }
+
+    /**
+     * 비밀번호 아이디와 동일하게 변경
+     * @param usersDto
+     * @param httpSession
+     * @return
+     */
+    @PostMapping(Url.AUTH.PWD_RESET)
+    @ResponseBody
+    public Long pwdReset(@RequestBody UsersDto usersDto, HttpSession httpSession){
+        return usersService.pwdReset(usersDto);
+    }
+
+
 }

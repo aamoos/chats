@@ -1,5 +1,6 @@
 package com.chatting.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
-@Setter
 public class SelfAuth {
 
     @Id
@@ -23,4 +23,12 @@ public class SelfAuth {
 
     //사용자 serial 번호
     private String serialNo;
+
+    public SelfAuth() {}
+
+    @Builder
+    public SelfAuth(String userId, String serialNo) {
+        this.userId = userId;
+        this.serialNo = serialNo;
+    }
 }

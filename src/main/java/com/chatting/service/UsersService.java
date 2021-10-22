@@ -1,18 +1,25 @@
 package com.chatting.service;
 
+import com.chatting.dto.IdCheckDto;
+import com.chatting.dto.SelfAuthDto;
+import com.chatting.dto.UsersDto;
 import com.chatting.entity.SelfAuth;
 import com.chatting.entity.Users;
+import com.chatting.entity.UsersAuthority;
 import com.chatting.repository.SelfAuthRepository;
+import com.chatting.repository.UsersAuthorityRepository;
 import com.chatting.repository.UsersRepository;
 import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,14 +29,16 @@ public class UsersService {
 
     private final SelfAuthRepository selfAuthRepository;
     private final UsersRepository usersRepository;
+    private final UsersAuthorityRepository usersAuthorityRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 인증번호 저장
-     * @param selfAuth
+     * @param SelfAuthDto
      * @return
      */
-    public Long saveSerialNo(SelfAuth selfAuth){
-        return selfAuthRepository.save(selfAuth).getSelfIdx();
+    public Long saveSerialNo(SelfAuthDto SelfAuthDto){
+        return selfAuthRepository.save(SelfAuthDto.toEntity()).getSelfIdx();
     }
 
     /**
@@ -42,11 +51,14 @@ public class UsersService {
 
     /**
      * 인증번호 체크
-     * @param selfAuth
+     * @param SelfAuthDto
      */
-    public Map<String, Object> serialNoCheck(SelfAuth selfAuth, HttpSession session){
+    public Map<String, Object> serialNoCheck(SelfAuthDto SelfAuthDto, HttpSession session){
         Map<String, Object> result = new HashMap<String, Object>();
-        SelfAuth self = selfAuthRepository.findByUserIdAndSerialNo(selfAuth.getUserId(), selfAuth.getSerialNo());
+        System.out.println("===================");
+        System.out.println(SelfAuthDto.getUserId());
+        System.out.println(SelfAuthDto.getSerialNo());
+        SelfAuth self = selfAuthRepository.findByUserIdAndSerialNo(SelfAuthDto.getUserId(), SelfAuthDto.getSerialNo());
 
         //인증번호가 틀릴경우
         if(self == null){
@@ -56,22 +68,23 @@ public class UsersService {
 
         //인증번호 맞을경우
         else{
-
             //회원 등록 처리
-            String userId = ((Users) session.getAttribute("users")).getUserId();
-            String password = ((Users) session.getAttribute("users")).getPassword();
-            String handPhoneNo = ((Users) session.getAttribute("users")).getHandPhoneNo();
-            String userName = ((Users) session.getAttribute("users")).getUserName();
+            String userId = (String) session.getAttribute("userId");
+            String password = passwordEncoder.encode((String) session.getAttribute("password"));
+            String handPhoneNo = (String) session.getAttribute("handPhoneNo");
+            String userName = (String) session.getAttribute("userName");
+            String token = (String) session.getAttribute("token");
 
+            UsersDto usersDto = new UsersDto(userId, password, handPhoneNo, userName, "Y", token);
 
-            Users users = new Users();
-            users.setUserId(userId);
-            users.setPassword(password);
-            users.setHandPhoneNo(handPhoneNo);
-            users.setUserName(userName);
-            users.setUseYn("Y");
             //회원 등록
-            usersRepository.save(users);
+            usersRepository.save(usersDto.toEntity());
+
+            //권한설정
+            UsersAuthority userAuthority = new UsersAuthority();
+            userAuthority.setUserId(usersDto.getUserId());
+            userAuthority.setAuthority("USER");
+            usersAuthorityRepository.save(userAuthority);
 
             result.put("resultCode", "success");
             result.put("resultMsg", "회원이 정상적으로 등록되었습니다.");
@@ -81,13 +94,13 @@ public class UsersService {
     }
 
     /**
-     * 아이디 중복체크
-     * @param users
+     * 중복체크
+     * @param usersDto
      * @return
      */
-    public Map<String, Object> duplicateCheck(Users users){
+    public Map<String, Object> duplicateCheck(UsersDto usersDto){
         Map<String, Object> result = new HashMap<String, Object>();
-        Users selectUser = usersRepository.findByUserIdOrHandPhoneNoAndUseYn(users.getUserId(), users.getHandPhoneNo(), "Y");
+        Users selectUser = usersRepository.findByUserIdOrHandPhoneNoAndUseYn(usersDto.getUserId(), usersDto.getHandPhoneNo(), "Y");
 
         //생성가능
         if(selectUser == null){
@@ -101,6 +114,41 @@ public class UsersService {
         }
 
         return result;
+    }
+
+    //회원가입시 유효성체크
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            System.out.println("validKeyName : " + validKeyName);
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+
+        return validatorResult;
+    }
+
+    //아이디찾기
+    public String findByUserId(IdCheckDto idCheckDto){
+        Users users = usersRepository.findByHandPhoneNoAndUsernameAndUseYn(idCheckDto.getHandPhoneNo(), idCheckDto.getUsername(), "Y");
+        return users.getUserId();
+    }
+
+    /**
+     * 비밀번호 초기화
+     * @param usersDto
+     * @return
+     */
+    public Long pwdReset(UsersDto usersDto){
+
+        Users users = usersRepository.findByUserIdAndUseYn(usersDto.getUserId(), "Y");
+
+        //패스워드 암호화
+        String password = passwordEncoder.encode(users.getUserId());
+        users.setPassword(password);
+
+        return usersRepository.save(users).getUserIdx();
     }
 
 }

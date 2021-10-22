@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:replace="fragment/config :: configFragment" ></th:block>
+<head>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/styles.css}" >
+    </th:block>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Chats</title>
+</head>
+<body>
+<input type="hidden" id="userId" th:value="${userId}"/>
+
+<header class="welcome-header" id="joinHeader">
+    <h1 class="welcome-header__title">Chats 비밀번호 찾기</h1>
+    <p class="welcome-header__text">
+        변경된 비밀번호가 해당 메일로 발송되었습니다.
+    </p>
+</header>
+
+<form id="login-form">
+
+    <input type="button" onclick="location.href='/auth/login'" value="로그인" />
+    <input type="button" onclick="emailSend()" value="이메일 재발송" />
+</form>
+
+<script
+        src="https://kit.fontawesome.com/6478f529f2.js"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
+
+<script th:inline="javascript">
+
+    //패스워드 초기화
+    pwdReset();
+
+    //이메일 발송
+    emailSend();
+
+    //패스워드 초기화
+    function pwdReset(){
+
+        var params = {
+            userId : $("#userId").val()
+        }
+
+        $.ajax({
+            url: "/auth/pwdReset"
+            ,type: "POST"
+            ,accept: "application/json"
+            ,contentType: "application/json; charset=utf-8"
+            ,data: JSON.stringify(params)
+            ,dataType: "json"
+            ,success: function(data) {
+
+            },
+
+            error: function(jqXHR,textStatus,errorThrown) {
+                alert("이메일 전송에 실패하였습니다.");
+            }
+        });
+    }
+
+    //이메일 발송
+    function emailSend(){
+        var subject = "chats 비밀번호 입니다.";
+        var body = "안녕하세요 chats 입니다. \n 변경된 비밀번호는 아이디와 동일합니다.";
+
+        var params = {
+             userId : $("#userId").val()
+            ,body : body
+            ,subject : subject
+        }
+
+        $.ajax({
+            url: "/auth/sendEmail"
+            ,type: "POST"
+            ,accept: "application/json"
+            ,contentType: "application/json; charset=utf-8"
+            ,data: JSON.stringify(params)
+            ,dataType: "json"
+            ,success: function(data) {
+
+            },
+
+            error: function(jqXHR,textStatus,errorThrown) {
+                alert("이메일 전송에 실패하였습니다.");
+            }
+        });
+    }
+
+</script>

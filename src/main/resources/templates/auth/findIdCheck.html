@@ -15,30 +15,24 @@
 <body>
 
 <header class="welcome-header" id="joinHeader">
-    <h1 class="welcome-header__title">Chats 회원가입</h1>
+    <h1 class="welcome-header__title">Chats 아이디 찾기</h1>
+    <p class="welcome-header__text">
+        핸드폰번호와 이름을 입력해주세요.
+    </p>
 </header>
 
-<form action="/auth/join" id="login-form" th:object="${usersDto}" method="post">
-    <input th:field="*{userId}" type="text" placeholder="이메일을 입력해주세요." />
-        <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" />
-    <br>
-
-    <input th:field="*{password}" type="password" placeholder="패스워드를 입력해주세요." maxlength="20" />
-        <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" />
-    <br>
-
-    <input type="password" id="password1" name="password1" placeholder="패스워드 확인" maxlength="20" />
-    <br>
+<form action="/auth/findIdCheck" id="login-form" th:object="${idCheckDto}" method="post">
 
     <input th:field="*{handPhoneNo}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="핸드폰번호를 입력해주세요." maxlength="13" />
-        <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('handPhoneNo')}" th:errors="*{handPhoneNo}" />
+    <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('handPhoneNo')}" th:errors="*{handPhoneNo}" />
     <br>
 
     <input th:field="*{username}" type="text" placeholder="이름을 입력해주세요." />
-        <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
+    <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
     <br>
 
-    <input type="button" onclick="join()" value="Join" />
+    <input type="button" onclick="findId()" value="아이디 찾기" />
+    <input type="button" onclick="location.href='/auth/login'" value="뒤로가기" />
 </form>
 
 <script
@@ -50,7 +44,7 @@
 
 <script th:inline="javascript">
 
-    function join(){
+    function findId(){
         $("#login-form").submit();
     }
 
