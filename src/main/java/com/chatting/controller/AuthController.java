@@ -13,8 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.security.Principal;
 import java.util.Map;
 
 /**
@@ -33,7 +36,13 @@ public class AuthController {
      * @return
      */
     @GetMapping(Url.AUTH.LOGIN)
-    public String login(HttpServletRequest req, HttpSession session){
+    public String login(HttpServletRequest req, HttpServletResponse res, HttpSession session, Principal principal) throws IOException {
+
+        //session이 있을경우 main으로 이동
+        if(principal != null){
+            res.sendRedirect(Url.MAIN.MAIN);
+        }
+
         System.out.println("token : " + req.getParameter("token"));
         String token = req.getParameter("token");
 
