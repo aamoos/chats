@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 /**
@@ -26,13 +28,14 @@ public class MainController {
      * @return
      */
     @GetMapping(Url.MAIN.MAIN)
-    public String main(Principal principal, Model model){
+    public String main(HttpServletRequest req, Principal principal, Model model){
 
         Users users = usersRepository.findByUserId(principal.getName());
 
         //로그인한 사용자 정보 조회
         model.addAttribute("userInfo", users);
         model.addAttribute("handPhoneNo", StringUtils.phone(users.getHandPhoneNo()));
+        model.addAttribute("address", req.getParameter("address"));
 
         return Url.MAIN.MAIN_HTML;
     }
