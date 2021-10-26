@@ -32,6 +32,8 @@ public class MainController {
 
         Users users = usersRepository.findByUserId(principal.getName());
 
+        System.out.println("address : " + req.getParameter("address"));
+
         //로그인한 사용자 정보 조회
         model.addAttribute("userInfo", users);
         model.addAttribute("handPhoneNo", StringUtils.phone(users.getHandPhoneNo()));
