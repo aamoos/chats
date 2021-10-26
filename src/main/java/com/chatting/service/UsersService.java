@@ -72,10 +72,10 @@ public class UsersService {
             String userId = (String) session.getAttribute("userId");
             String password = passwordEncoder.encode((String) session.getAttribute("password"));
             String handPhoneNo = (String) session.getAttribute("handPhoneNo");
-            String userName = (String) session.getAttribute("userName");
+            String nickName = (String) session.getAttribute("nickName");
             String token = (String) session.getAttribute("token");
 
-            UsersDto usersDto = new UsersDto(userId, password, handPhoneNo, userName, "Y", token);
+            UsersDto usersDto = new UsersDto(userId, password, handPhoneNo, nickName, "Y", token);
 
             //회원 등록
             usersRepository.save(usersDto.toEntity());
@@ -131,7 +131,7 @@ public class UsersService {
 
     //아이디찾기
     public String findByUserId(IdCheckDto idCheckDto){
-        Users users = usersRepository.findByHandPhoneNoAndUsernameAndUseYn(idCheckDto.getHandPhoneNo(), idCheckDto.getUsername(), "Y");
+        Users users = usersRepository.findByHandPhoneNoAndNickNameAndUseYn(idCheckDto.getHandPhoneNo(), idCheckDto.getUsername(), "Y");
         return users.getUserId();
     }
 

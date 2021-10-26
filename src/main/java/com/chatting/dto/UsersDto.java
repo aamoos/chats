@@ -36,7 +36,7 @@ public class UsersDto implements UserDetails {
 
     //사용자 이름
     @NotBlank(message="이름은 필수 항목입니다.")
-    private String username;
+    private String nickName;
 
     //사용여부
     private String useYn;
@@ -49,11 +49,11 @@ public class UsersDto implements UserDetails {
 
     public UsersDto() {}
 
-    public UsersDto(String userId, String password, String handPhoneNo, String username, String useYn, String token) {
+    public UsersDto(String userId, String password, String handPhoneNo, String nickName, String useYn, String token) {
         this.userId = userId;
         this.password = password;
         this.handPhoneNo = handPhoneNo;
-        this.username = username;
+        this.nickName = nickName;
         this.useYn = useYn;
         this.token = token;
     }
@@ -64,7 +64,7 @@ public class UsersDto implements UserDetails {
                 .userId(this.userId)
                 .password(this.password)
                 .handPhoneNo(this.handPhoneNo)
-                .username(this.username)
+                .nickName(this.nickName)
                 .useYn(this.useYn)
                 .token(this.token)
                 .build();
@@ -72,7 +72,7 @@ public class UsersDto implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return userId;
     }
 
     @Override

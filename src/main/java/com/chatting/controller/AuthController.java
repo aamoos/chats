@@ -86,7 +86,7 @@ public class AuthController {
         session.setAttribute("userId", usersDto.getUserId());
         session.setAttribute("password", usersDto.getPassword());
         session.setAttribute("handPhoneNo", usersDto.getHandPhoneNo());
-        session.setAttribute("userName", usersDto.getUsername());
+        session.setAttribute("nickName", usersDto.getNickName());
 
         return Url.AUTH.JOIN_CHECK_HTML;
     }

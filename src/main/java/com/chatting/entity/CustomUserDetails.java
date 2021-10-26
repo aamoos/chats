@@ -1,53 +1,31 @@
 package com.chatting.entity;
 
-import lombok.Builder;
+import com.chatting.dto.UsersAuthorityDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
-@Entity
-public class Users implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userIdx;
-
-    //사용자 아이디
     private String userId;
-
-    //사용자 패스워드
     private String password;
+    private List<Map<String,String>> authenticatedMenu = new ArrayList<Map<String,String>>();
+    private List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
 
-    //사용자 핸드폰번호
-    private String handPhoneNo;
+    //권한
+    public List<UsersAuthorityDto> authorities;
 
-    private String nickName;
-
-    //사용여부
-    private String useYn;
-
-    //푸시토큰
-    private String token;
-
-    public Users() {}
-
-    @Transient
-    public List<UsersAuthority> authorities;
-
-    @Builder
-    public Users(String userId, String password, String handPhoneNo, String nickName, String useYn, String token) {
+    public CustomUserDetails(String userId, String password) {
         this.userId = userId;
         this.password = password;
-        this.handPhoneNo = handPhoneNo;
-        this.nickName = nickName;
-        this.useYn = useYn;
-        this.token = token;
     }
 
     @Override

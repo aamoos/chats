@@ -14,7 +14,4 @@ public interface UsersAuthorityRepository extends CrudRepository<UsersAuthority,
     //아이디로 검색
     List<UsersAuthority> findByUserId(String userId);
 
-    //아이디로 삭제
-    UsersAuthority deleteByUserId(String userId);
-
 }

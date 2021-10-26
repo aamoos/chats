@@ -51,12 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .rememberMe()
-                .key("jpa") //쿠키에 사용되는 값을 암호화하기 위한 키(key)값
+            .rememberMe()
                 .rememberMeParameter("remember-me")
                 .userDetailsService(customUsersDetailService)
                 .tokenRepository(tokenRepository()) //DataSource 추가
-                .tokenValiditySeconds(604800) //토큰 유지 시간(초단위) - 일주일
+
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
@@ -67,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 //로그인 화면 설정
-                .formLogin()
+            .formLogin()
                 .permitAll()
                 .loginPage(Url.AUTH.LOGIN)
                 .loginProcessingUrl(Url.AUTH.LOGIN_PROC)
@@ -76,10 +75,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter(USERNAME_PARAM)
                 .passwordParameter(PASSWORD_PARAM)
                 .and()
-                .logout()
+            .logout()
                 .logoutUrl(Url.AUTH.LOGOUT_PROC)
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("JSESSIONID","remember-me")//로그아웃 후 쿠키 삭제
                 .and()
 
                 //세션관리

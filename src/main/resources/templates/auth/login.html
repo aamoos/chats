@@ -50,10 +50,12 @@
      //로그인 submit
     function loginSubmit(){
 
+        var rememberMe = $("#rememberMe:checked").val();
+
         var params = {
              'userId' : $.trim($("#loginId").val())
             ,'password' : $("#loginPw").val()
-            ,'remember-me' : $("#rememberMe").val()
+            ,'remember-me' : rememberMe
         }
 
         console.log(params);

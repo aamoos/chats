@@ -31,8 +31,8 @@
     <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('handPhoneNo')}" th:errors="*{handPhoneNo}" />
     <br>
 
-    <input th:field="*{username}" type="text" placeholder="이름을 입력해주세요." />
-    <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
+    <input th:field="*{nickName}" type="text" placeholder="이름을 입력해주세요." />
+    <span style="color:red; font-weight: bold;" class="err" th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}" />
     <br>
 
     <input type="button" onclick="findPw()" value="비밀번호 찾기" />
