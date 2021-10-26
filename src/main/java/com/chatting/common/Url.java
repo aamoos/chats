@@ -83,7 +83,7 @@ public final class Url {
     public static final class MAIN {
 
         /** 메인 */
-        public static final String MAIN = "/";
+        public static final String MAIN = "/main";
         public static final String MAIN_HTML = "chat/main";
 
         /** 채팅 */

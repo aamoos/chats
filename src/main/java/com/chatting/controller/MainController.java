@@ -1,9 +1,15 @@
 package com.chatting.controller;
 
 import com.chatting.common.Url;
+import com.chatting.entity.Users;
+import com.chatting.repository.UsersRepository;
+import com.chatting.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
 
 /**
  * 메인 controller
@@ -13,12 +19,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class MainController {
 
+    private final UsersRepository usersRepository;
+
     /**
      * 메인
      * @return
      */
     @GetMapping(Url.MAIN.MAIN)
-    public String main(){
+    public String main(Principal principal, Model model){
+
+        Users users = usersRepository.findByUserId(principal.getName());
+
+        //로그인한 사용자 정보 조회
+        model.addAttribute("userInfo", users);
+        model.addAttribute("handPhoneNo", StringUtils.phone(users.getHandPhoneNo()));
+
         return Url.MAIN.MAIN_HTML;
     }
 

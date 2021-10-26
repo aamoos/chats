@@ -1,6 +1,9 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragment/config :: configFragment" ></th:block>
 <!-- Head -->
 <head>
     <meta charset="UTF-8">
@@ -2463,8 +2466,8 @@
                             <img class="avatar-img" src="/images/1.jpg" alt="#">
                         </div>
 
-                        <h4 class="mb-1">William Wright</h4>
-                        <p>last seen 5 minutes ago</p>
+                        <h4 class="mb-1" th:text="${userInfo.nickName}">William Wright</h4>
+                        <!--<p>last seen 5 minutes ago</p> -->
                     </div>
                 </div>
                 <!-- Header -->
@@ -2492,7 +2495,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>E-mail</h5>
-                                <p>william@studio.com</p>
+                                <p th:text="${userInfo.userId}">william@studio.com</p>
                             </div>
 
                             <div class="col-auto">
@@ -2507,7 +2510,7 @@
                         <div class="row align-items-center gx-6">
                             <div class="col">
                                 <h5>Phone</h5>
-                                <p>1-800-275-2273</p>
+                                <p th:text="${handPhoneNo}">1-800-275-2273</p>
                             </div>
 
                             <div class="col-auto">
@@ -2546,9 +2549,9 @@
 
                 <!-- List -->
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
+                    <!-- <li class="list-group-item">
                         <a href="#tab-settings" class="text-reset" data-theme-toggle="tab" title="Settings" data-bs-dismiss="modal">Settings</a>
-                    </li>
+                    </li> -->
 
                     <li class="list-group-item">
                         <a href="/auth/logout-proc" class="text-danger">Logout</a>
@@ -2589,7 +2592,6 @@
                         </div>
 
                         <h4 class="mb-1">William Wright</h4>
-                        <p>last seen 5 minutes ago</p>
                     </div>
                 </div>
                 <!-- Header -->
