@@ -35,19 +35,23 @@ public class Users implements UserDetails {
     //푸시토큰
     private String token;
 
+    //프로필 이미지 idx
+    private Long profileIdx;
+
     public Users() {}
 
     @Transient
     public List<UsersAuthority> authorities;
 
     @Builder
-    public Users(String userId, String password, String handPhoneNo, String nickName, String useYn, String token) {
+    public Users(String userId, String password, String handPhoneNo, String nickName, String useYn, String token, Long profileIdx) {
         this.userId = userId;
         this.password = password;
         this.handPhoneNo = handPhoneNo;
         this.nickName = nickName;
         this.useYn = useYn;
         this.token = token;
+        this.profileIdx = profileIdx;
     }
 
     @Override

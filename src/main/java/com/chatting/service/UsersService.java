@@ -75,7 +75,7 @@ public class UsersService {
             String nickName = (String) session.getAttribute("nickName");
             String token = (String) session.getAttribute("token");
 
-            UsersDto usersDto = new UsersDto(userId, password, handPhoneNo, nickName, "Y", token);
+            UsersDto usersDto = new UsersDto(userId, password, handPhoneNo, nickName, "Y", token, 0L);
 
             //회원 등록
             usersRepository.save(usersDto.toEntity());
@@ -151,4 +151,15 @@ public class UsersService {
         return usersRepository.save(users).getUserIdx();
     }
 
+    /**
+     * 프로필 이미지 저장
+     * @param usersDto
+     * @return
+     */
+    public Long saveProfileImg(UsersDto usersDto){
+        //프로필 이미지 저장
+        Users users = usersRepository.findByUserId(usersDto.getUserId());
+        users.setProfileIdx(usersDto.getProfileIdx());
+        return usersRepository.save(users).getUserIdx();
+    }
 }

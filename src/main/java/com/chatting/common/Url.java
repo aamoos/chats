@@ -86,6 +86,9 @@ public final class Url {
         public static final String MAIN = "/main";
         public static final String MAIN_HTML = "chat/main";
 
+        /** 이미지 저장 */
+        public static final String SAVE_PROFILE_IMG = "/saveProfileImg";
+
         /** 채팅 */
         public static final String CHAT = "/chat";
         public static final String CHAT_HTML = "chat/chat";

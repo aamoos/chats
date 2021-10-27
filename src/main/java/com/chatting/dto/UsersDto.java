@@ -44,18 +44,22 @@ public class UsersDto implements UserDetails {
     //푸시 토큰
     private String token;
 
+    //프로필 이미지 idx
+    private Long profileIdx;
+
     //권한
     public List<UsersAuthorityDto> authorities;
 
     public UsersDto() {}
 
-    public UsersDto(String userId, String password, String handPhoneNo, String nickName, String useYn, String token) {
+    public UsersDto(String userId, String password, String handPhoneNo, String nickName, String useYn, String token, Long profileIdx) {
         this.userId = userId;
         this.password = password;
         this.handPhoneNo = handPhoneNo;
         this.nickName = nickName;
         this.useYn = useYn;
         this.token = token;
+        this.profileIdx = profileIdx;
     }
 
     // 엔티티변환
@@ -67,6 +71,7 @@ public class UsersDto implements UserDetails {
                 .nickName(this.nickName)
                 .useYn(this.useYn)
                 .token(this.token)
+                .profileIdx(this.profileIdx)
                 .build();
     }
 

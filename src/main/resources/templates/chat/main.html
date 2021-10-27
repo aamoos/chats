@@ -1,7 +1,8 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <th:block th:replace="fragment/config :: configFragment" ></th:block>
 <!-- Head -->
@@ -2462,10 +2463,12 @@
                     </div>
 
                     <div class="profile-body">
-                        <div class="avatar avatar-xl">
-                            <img class="avatar-img" src="/images/1.jpg" alt="#">
-                        </div>
-
+                        <form name="fileForm" id="fileForm">
+                            <div class="avatar avatar-xl">
+                                <input id="input_file" onChange="fileChange(this)" type="file" accept="image/*" style="display:none;">
+                                <img style="width:100%; height:100%;" id="profileImg" onclick="fileClick()" class="avatar-img" src="/images/1.jpg" alt="#">
+                            </div>
+                        </form>
                         <h4 class="mb-1" th:text="${userInfo.nickName}">William Wright</h4>
                         <!--<p>last seen 5 minutes ago</p> -->
                     </div>
@@ -2496,6 +2499,7 @@
                             <div class="col">
                                 <h5>이메일</h5>
                                 <p th:text="${userInfo.userId}">william@studio.com</p>
+                                <input type="hidden" id="userId" th:value="${userInfo.userId}" />
                             </div>
 
                             <div class="col-auto">
@@ -2763,3 +2767,114 @@
 <script src="/js/template.js"></script>
 </body>
 </html>
+
+<script th:inline="javascript">
+
+   //파일 현재 필드 갯수
+	var fileCount = 0;
+
+	//첨부파일 배열
+	var content_files = new Array();
+
+	//파일 시퀀스들
+	var fileIdx = "";
+
+    //파일 change 이벤트
+	function fileChange(target){
+        console.log(target.files);
+		var files = target.files;
+
+		//파일 배열 담기
+		var filesArr = Array.prototype.slice.call(files);
+
+		// 각각의 파일 배열담기 및 기타
+		filesArr.forEach(function (f) {
+		    var imageUrl = URL.createObjectURL(f);
+			var reader = new FileReader();
+			reader.onload = function (e) {
+			content_files.push(f);
+			console.log(content_files)
+			$("#profileImg").attr("src", imageUrl);
+	      };
+	      reader.readAsDataURL(f);
+	    });
+        alert(content_files.length);
+        registerAction()
+
+	    //초기화 한다.
+	    $("#input_file").val("");
+
+	}
+
+
+    //파일 추가 클릭
+	function fileClick(){
+		$("#input_file").click();
+	}
+
+	//파일 저장
+	function registerAction(){
+		console.log(content_files);
+		var form = $("#fileForm")[0];
+	 	var formData = new FormData(form);
+		for (var x = 0; x < content_files.length; x++) {
+			// 삭제 안한것만 담아 준다.
+			if(!content_files[x].is_delete){
+				 formData.append("article_file", content_files[x]);
+				 formData.append("filePath", "/main");
+			}
+		}
+
+	   /*
+	   * 파일업로드 multiple ajax처리
+	   */
+		$.ajax({
+	   	      type: "POST",
+	   	   	  enctype: "multipart/form-data",
+	   	      url: "/file-upload",
+	       	  data : formData,
+	       	  processData: false,
+	   	      contentType: false,
+	   	      success: function (data) {
+
+	   	    	console.log(data)
+	   	    	//파일 시퀀스들
+	   	    	fileIdx = data.fileIdx;
+	   	    	if(data.result == "OK"){
+	   	    		saveProfile();
+				} else
+					alert("서버내 오류로 처리가 지연되고있습니다. 잠시 후 다시 시도해주세요");
+	   	      },
+	   	      error: function (xhr, status, error) {
+
+			}
+		});
+	}
+
+	 //이미지 등록
+	function saveProfile(){
+
+		//step2. 게시판 등록
+		var params = {
+			  profileIdx : fileIdx
+			 ,userId : $("#userId").val()
+		}
+
+	    console.log(params);
+
+		$.ajax({
+	         type : 'POST'
+	        ,url : "/saveProfileImg"
+	        ,dataType : 'json'
+	        ,data : JSON.stringify(params)
+	        ,contentType: 'application/json'
+	        ,success : function(result) {
+
+	        },
+	        error: function(request, status, error) {
+
+	        }
+	    })
+	}
+
+</script>
