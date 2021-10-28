@@ -3,9 +3,11 @@ package com.chatting.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,6 +44,10 @@ public class Users implements UserDetails {
 
     @Transient
     public List<UsersAuthority> authorities;
+
+    //insert시에 현재시간을 읽어서 저장
+    @CreationTimestamp
+    private LocalDateTime regDate;
 
     @Builder
     public Users(String userId, String password, String handPhoneNo, String nickName, String useYn, String token, Long profileIdx) {

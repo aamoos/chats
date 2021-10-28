@@ -89,6 +89,15 @@ public final class Url {
         /** 이미지 저장 */
         public static final String SAVE_PROFILE_IMG = "/saveProfileImg";
 
+        /** 친구 추가 요청 */
+        public static final String FRIENDS_INVITE = "/friendsInvite";
+
+        /** 친구요청 보내는 아이디가 실제로 존재하는지 체크 */
+        public static final String FRIENDS_EXIST_CHECK = "/friendsExistCheck";
+
+        /** 친구요청 플래그 업데이트 */
+        public static final String RESPONSE_YN_UPDATE = "/responseYnUpdate";
+
         /** 채팅 */
         public static final String CHAT = "/chat";
         public static final String CHAT_HTML = "chat/chat";
