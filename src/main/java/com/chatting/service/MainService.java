@@ -96,6 +96,12 @@ public class MainService {
 
             friends.setFriendsId(friendsId);
             friendsRepository.save(friends).getFriendsIdx();
+
+            //반대도 넣어줘야함
+            Friends friends1 = new Friends();
+            friends1.setUserId(friendsId);
+            friends1.setFriendsId(principal.getName());
+            friendsRepository.save(friends1).getFriendsIdx();
         }
 
         return friendsInviteRepository.save(friendsInvite1).getFriendsIdx();
