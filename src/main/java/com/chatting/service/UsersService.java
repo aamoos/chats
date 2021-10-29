@@ -3,11 +3,8 @@ package com.chatting.service;
 import com.chatting.dto.IdCheckDto;
 import com.chatting.dto.SelfAuthDto;
 import com.chatting.dto.UsersDto;
-import com.chatting.entity.FriendsInvite;
-import com.chatting.entity.SelfAuth;
-import com.chatting.entity.Users;
-import com.chatting.entity.UsersAuthority;
-import com.chatting.repository.FriendsInviteRepository;
+import com.chatting.entity.*;
+import com.chatting.repository.FriendsRepository;
 import com.chatting.repository.SelfAuthRepository;
 import com.chatting.repository.UsersAuthorityRepository;
 import com.chatting.repository.UsersRepository;
@@ -21,6 +18,7 @@ import org.springframework.validation.FieldError;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -33,7 +31,7 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final UsersAuthorityRepository usersAuthorityRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final FriendsRepository friendsRepository;
     /**
      * 인증번호 저장
      * @param SelfAuthDto
@@ -148,9 +146,8 @@ public class UsersService {
 
         //패스워드 암호화
         String password = passwordEncoder.encode(users.getUserId());
-        users.setPassword(password);
-
-        return usersRepository.save(users).getUserIdx();
+        UsersDto usersDto1 = new UsersDto(users.getUserId(), password, users.getHandPhoneNo(), users.getNickName(), users.getUseYn(), users.getToken(), users.getProfileIdx());
+        return usersRepository.save(usersDto1.toEntity()).getUserIdx();
     }
 
     /**
@@ -164,4 +161,25 @@ public class UsersService {
         users.setProfileIdx(usersDto.getProfileIdx());
         return usersRepository.save(users).getUserIdx();
     }
+
+    /**
+     * 회원탈퇴
+     * @param userId
+     */
+    public void withdrawal(String userId){
+
+        //친구테이블에 삭제하려는 아이디가 friends_id 또는 user_id면 다삭제
+        List<Friends> friends = friendsRepository.findAllByFriendsIdOrUserId(userId, userId);
+        friendsRepository.deleteAll(friends);
+
+        //사용자 테이블 삭제
+        Users users = usersRepository.findByUserId(userId);
+        usersRepository.delete(users);
+
+        //권한 삭제
+        UsersAuthority usersAuthority = usersAuthorityRepository.findByUserId(userId).get(0);
+        usersAuthorityRepository.delete(usersAuthority);
+
+    }
+
 }

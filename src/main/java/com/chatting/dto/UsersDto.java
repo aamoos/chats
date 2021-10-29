@@ -52,15 +52,21 @@ public class UsersDto implements UserDetails {
 
     public UsersDto() {}
 
-    public UsersDto(String userId, String password, String handPhoneNo, String nickName, String useYn, String token, Long profileIdx) {
-        this.userId = userId;
-        this.password = password;
-        this.handPhoneNo = handPhoneNo;
-        this.nickName = nickName;
-        this.useYn = useYn;
-        this.token = token;
-        this.profileIdx = profileIdx;
-    }
+    public UsersDto(String userId
+                    , String password
+                    , String handPhoneNo
+                    , String nickName
+                    , String useYn
+                    , String token
+                    , Long profileIdx) {
+                        this.userId = userId;
+                        this.password = password;
+                        this.handPhoneNo = handPhoneNo;
+                        this.nickName = nickName;
+                        this.useYn = useYn;
+                        this.token = token;
+                        this.profileIdx = profileIdx;
+                    }
 
     // 엔티티변환
     public Users toEntity() {

@@ -98,6 +98,15 @@ public final class Url {
         /** 친구요청 플래그 업데이트 */
         public static final String RESPONSE_YN_UPDATE = "/responseYnUpdate";
 
+        /** 친구 검색 */
+        public static final String SEARCH_FRIENDS = "/searchFriends";
+
+        /** 친구 block 하기 */
+        public static final String BLOCK_FRIENDS_DELETE = "/blockFriendsDelete";
+
+        /** 회원탈퇴 */
+        public static final String WITHDRAWAL = "/withdrawal";
+
         /** 채팅 */
         public static final String CHAT = "/chat";
         public static final String CHAT_HTML = "chat/chat";

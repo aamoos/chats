@@ -35,7 +35,7 @@ public class MainService {
      */
     public Long saveFriendsInvite(FriendsInvite friendsInvite){
 
-        FriendsInvite friendsInvite1 = friendsInviteRepository.findByRequestUserIdAndResponseUserId(friendsInvite.getRequestUserId(), friendsInvite.getResponseUserId());
+        FriendsInvite friendsInvite1 = friendsInviteRepository.findByResponseUserId(friendsInvite.getResponseUserId());
 
         if(friendsInvite1 != null){
             //동일한 사람에게 보낸건 있으면 삭제처리
@@ -49,6 +49,7 @@ public class MainService {
     /**
      * 친구요청 받는사람이 실제로 존재하는지 체크
      * @param friendsInvite
+     * @param principal
      * @return
      */
     public Map<String, Object> friendsExistCheck(FriendsInvite friendsInvite, Principal principal){
@@ -105,6 +106,13 @@ public class MainService {
         }
 
         return friendsInviteRepository.save(friendsInvite1).getFriendsIdx();
+    }
+
+    //친구 블락처리
+    public void blockFriendsDelete(Friends friends){
+
+        Friends friends1 = friendsRepository.findByFriendsIdx(friends.getFriendsIdx());
+        friendsRepository.delete(friends1);
     }
 
 }

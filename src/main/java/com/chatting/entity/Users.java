@@ -40,8 +40,6 @@ public class Users implements UserDetails {
     //프로필 이미지 idx
     private Long profileIdx;
 
-    public Users() {}
-
     @Transient
     public List<UsersAuthority> authorities;
 
@@ -49,8 +47,10 @@ public class Users implements UserDetails {
     @CreationTimestamp
     private LocalDateTime regDate;
 
+    public Users() {}
+
     @Builder
-    public Users(String userId, String password, String handPhoneNo, String nickName, String useYn, String token, Long profileIdx) {
+    public Users(String userId, String password, String handPhoneNo, String nickName, String useYn, String token, Long profileIdx, List<UsersAuthority> authorities) {
         this.userId = userId;
         this.password = password;
         this.handPhoneNo = handPhoneNo;
@@ -58,6 +58,7 @@ public class Users implements UserDetails {
         this.useYn = useYn;
         this.token = token;
         this.profileIdx = profileIdx;
+        this.authorities = authorities;
     }
 
     @Override

@@ -318,13 +318,13 @@
                             <div class="mb-6">
                                 <form action="#">
                                     <div class="input-group">
-                                        <div class="input-group-text">
+                                        <div id="friendsSearch" class="input-group-text">
                                             <div class="icon icon-lg">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                             </div>
                                         </div>
 
-                                        <input type="text" class="form-control form-control-lg ps-0" placeholder="Search messages or users" aria-label="Search for messages or users...">
+                                        <input id="friendsSearchVal" type="text" class="form-control form-control-lg ps-0" placeholder="Search messages or users" aria-label="Search for messages or users...">
                                     </div>
                                 </form>
 
@@ -341,7 +341,7 @@
                             </div>
 
                             <!-- List -->
-                            <div class="card-list">
+                            <div id="friendsDiv" class="card-list">
 
                                 <!-- Card -->
                                 <div th:each="friends : ${friends}" class="card border-0">
@@ -350,8 +350,8 @@
                                         <div class="row align-items-center gx-5">
                                             <div class="col-auto">
                                                 <a href="#" class="avatar ">
-                                                    <img th:if="${userInfo.profileIdx} == 0"  class="avatar-img" src="/images/6.jpg" alt="">
-                                                    <img th:if="${userInfo.profileIdx} != 0" th:src="@{/api/img/print/} + ${friends.friendsProfileIdx}" class="avatar-img" src="/images/6.jpg" alt="">
+                                                    <img th:if="${friends.friendsProfileIdx} == 0"  class="avatar-img" src="/images/6.jpg" alt="">
+                                                    <img th:if="${friends.friendsProfileIdx} != 0" th:src="@{/api/img/print/} + ${friends.friendsProfileIdx}" class="avatar-img" src="/images/6.jpg" alt="">
                                                 </a>
                                             </div>
 
@@ -373,7 +373,7 @@
                                                             <hr class="dropdown-divider">
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item text-danger" href="#">Block user</a>
+                                                            <a class="dropdown-item text-danger blockUser" th:onclick="|javascript:blockUserClick(${friends.friendsIdx})|" href="#">Block user</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -416,70 +416,6 @@
 
                             <!-- Chats -->
                             <div class="card-list">
-                                <!-- Card -->
-                                <a href="chat-group.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-online">
-                                                    <img src="/images/7.jpg" alt="#" class="avatar-img">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">William Wright</h5>
-                                                    <span class="text-muted extra-small ms-2">12:45 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        Hello! Yeah, I'm going to meet my friend of mine at the departments stores now.
-                                                    </div>
-
-                                                    <div class="badge badge-circle bg-primary ms-5">
-                                                        <span>3</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-
-                                    <div class="card-footer">
-                                        <div class="row align-items-center gx-4">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-xs">
-                                                    <img class="avatar-img" src="/images/bootstrap.svg" alt="Bootstrap Community">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <h6 class="mb-0">Bootstrap Community</h6>
-                                            </div>
-
-                                            <div class="col-auto">
-                                                <div class="avatar-group">
-                                                    <div class="avatar avatar-xs">
-                                                        <img src="/images/12.jpg" alt="#" class="avatar-img">
-                                                    </div>
-
-                                                    <div class="avatar avatar-xs">
-                                                        <img src="/images/11.jpg" alt="#" class="avatar-img">
-                                                    </div>
-
-                                                    <div class="avatar avatar-xs">
-                                                        <img src="/images/9.jpg" alt="#" class="avatar-img">
-                                                    </div>
-
-                                                    <div class="avatar avatar-xs">
-                                                        <span class="avatar-text">+5</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div><!-- .row -->
-                                    </div><!-- .card-footer -->
-                                </a>
-                                <!-- Card -->
 
                                 <!-- Card -->
                                 <a href="/chat" class="card border-0 text-reset">
@@ -504,33 +440,6 @@
 
                                                     <div class="badge badge-circle bg-primary ms-5">
                                                         <span>3</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="chat-empty.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-online">
-                                                    <img src="/images/8.jpg" alt="#" class="avatar-img">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Elise Dennis</h5>
-                                                    <span class="text-muted extra-small ms-2">08:35 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -576,200 +485,6 @@
                                 </a>
                                 <!-- Card -->
 
-                                <!-- Card -->
-                                <a href="chat-direct.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar">
-                                                    <img src="/images/4.jpg" alt="#" class="avatar-img">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Warren White</h5>
-                                                    <span class="text-muted extra-small ms-2">06:20 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        Hello! Yeah, I'm going to meet my friend of mine at the departments stores as soon as possible.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="chat-direct.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar">
-                                                    <img src="/images/11.jpg" alt="#" class="avatar-img">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Mila White</h5>
-                                                    <span class="text-muted extra-small ms-2">04:40 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        Hello! Yeah, I'm going to meet my friend of mine at the departments stores as soon as possible.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="chat-direct.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-online">
-                                                    <img src="/images/5.jpg" alt="#" class="avatar-img">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Damian Binder</h5>
-                                                    <span class="text-muted extra-small ms-2">02:45 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        Hello! Yeah, I'm going to meet my friend of mine at the departments stores as soon as possible.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="chat-direct.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-online">
-                                                    <span class="avatar-text">B</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Bill Marrow</h5>
-                                                    <span class="text-muted extra-small ms-2">12:20 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        Hello! Yeah, I'm going to meet my friend of mine at the departments stores as soon as possible.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="#" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-online">
-                                                    <span class="avatar-text">M</span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Marshall Wallaker</h5>
-                                                    <span class="text-muted extra-small ms-2">12:18 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        Hello! Yeah, I'm going to meet my friend of mine at the departments stores as soon as possible.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="chat-direct.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar">
-                                                    <svg class="avatar-img placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                                        <title>Placeholder</title>
-                                                        <rect width="100%" height="100%" fill="#868e96"></rect>
-                                                    </svg>
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="placeholder-glow w-100 mb-0">
-                                                        <span class="placeholder col-5"></span>
-                                                    </h5>
-                                                </div>
-
-                                                <div class="placeholder-glow">
-                                                    <span class="placeholder col-12"></span>
-                                                    <span class="placeholder col-8"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="chat-direct.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar">
-                                                    <svg class="avatar-img placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                                        <title>Placeholder</title>
-                                                        <rect width="100%" height="100%" fill="#868e96"></rect>
-                                                    </svg>
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="placeholder-glow  w-100  mb-0">
-                                                        <span class="placeholder col-5"></span>
-                                                    </h5>
-                                                </div>
-
-                                                <div class="placeholder-glow">
-                                                    <span class="placeholder col-12"></span>
-                                                    <span class="placeholder col-8"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
                             </div>
                             <!-- Chats -->
                         </div>
@@ -801,7 +516,8 @@
                                             <div class="col-auto">
                                                 <!-- Avatar -->
                                                 <a href="#" class="avatar">
-                                                    <img class="avatar-img" th:src="@{/api/img/print/} + ${notification.requestProfileIdx}" src="/images/11.jpg" alt="">
+                                                    <img th:if="${notification.requestProfileIdx} != 0" class="avatar-img" th:src="@{/api/img/print/} + ${notification.requestProfileIdx}" src="/images/1.jpg" alt="">
+                                                    <img th:if="${notification.requestProfileIdx} == 0" class="avatar-img" src="/images/1.jpg" alt="">
 
                                                     <div class="badge badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -1601,6 +1317,15 @@
                             </div>
                         </div>
                     </li>
+
+                    <li th:onclick="withdrawal()" class="list-group-item">
+                        <div class="row align-items-center gx-6">
+                            <div class="col">
+                                <h5>회원탈퇴</h5>
+                            </div>
+                        </div>
+                    </li>
+
                 </ul>
                 <!-- List  -->
 
@@ -1759,7 +1484,7 @@
                     </li>
 
                     <li class="list-group-item">
-                        <a href="#" class="text-danger">Block User</a>
+                        <a href="#" class="text-danger blockUser">Block User</a>
                     </li>
                 </ul>
                 <!-- List -->
@@ -1846,6 +1571,50 @@
 </html>
 
 <script th:inline="javascript">
+
+     //친구추가 거절
+    $(".hideClick").click(function(){
+
+        var friendsIdx = $(this).attr("friendsIdx");
+
+        var params = {
+	         friendsIdx : friendsIdx
+	         ,responseYn : 'N'
+	    }
+
+        responseYnUpdate(params)
+        $(this).parents(".card-list").remove();
+    });
+
+    //친구추가 승낙
+    $(".confirmClick").click(function(){
+
+        var friendsIdx = $(this).attr("friendsIdx");
+        var requestUserId = $(this).attr("requestUserId");
+        var responseUserId = $(this).attr("responseUserId");
+
+        var params = {
+	         friendsIdx : friendsIdx
+	         ,responseYn : 'Y'
+	         ,requestUserId : requestUserId
+	         ,responseUserId : responseUserId
+	    }
+        console.log(params);
+	    responseYnUpdate(params);
+	    $(this).parents(".card-list").remove();
+
+    });
+
+
+    //친구 검색 클릭
+    $("#friendsSearch").click(function(){
+        friendsPage()
+    });
+
+    //친구목록 클릭
+    $("#tab-friends").click(function(){
+         friendsPage()
+    });
 
    //파일 현재 필드 갯수
 	var fileCount = 0;
@@ -2039,40 +1808,6 @@
         });
     }
 
-    //친구추가 거절
-    $(".hideClick").click(function(){
-
-        var friendsIdx = $(this).attr("friendsIdx");
-
-        var params = {
-	         friendsIdx : friendsIdx
-	         ,responseYn : 'N'
-	    }
-
-        responseYnUpdate(params)
-        $(this).parents(".card-list").remove();
-    });
-
-    //친구추가 승낙
-    $(".confirmClick").click(function(){
-
-        var friendsIdx = $(this).attr("friendsIdx");
-        var requestUserId = $(this).attr("requestUserId");
-        var responseUserId = $(this).attr("responseUserId");
-
-        var params = {
-	         friendsIdx : friendsIdx
-	         ,responseYn : 'Y'
-	         ,requestUserId : requestUserId
-	         ,responseUserId : responseUserId
-	    }
-
-	    responseYnUpdate(params);
-	    $(this).parents(".card-list").remove();
-
-    });
-
-
     //responseYn 업데이트
     function responseYnUpdate(params){
 
@@ -2091,6 +1826,106 @@
 
             }
         });
+
+    }
+
+    //블락유저
+    function blockUserClick(friendsIdx){
+
+       var params = {
+            friendsIdx : friendsIdx
+       }
+
+        $.ajax({
+            url: "/blockFriendsDelete"
+            ,type: "POST"
+            ,accept: "application/json"
+            ,contentType: "application/json; charset=utf-8"
+            ,data: JSON.stringify(params)
+            ,dataType: "json"
+            ,success: function(result) {
+
+            },
+
+            error: function(jqXHR,textStatus,errorThrown) {
+
+            }
+        });
+
+    }
+
+    //친구페이지 가져오기
+    function friendsPage(){
+        var friendsName = $.trim($("#friendsSearchVal").val());
+
+        var params = {
+			  friendsName : friendsName
+		}
+
+	    console.log(params);
+
+		$.ajax({
+	         type : 'POST'
+	        ,url : "/searchFriends"
+	        ,dataType : 'json'
+	        ,data : JSON.stringify(params)
+	        ,contentType: 'application/json'
+	        ,success : function(result) {
+                console.log(result);
+
+                var appendHtml = "";
+
+                for(var i=0; i<result.length; i++){
+
+                    var friendsName = result[i].friendsName;
+                    var friendsProfileIdx = result[i].friendsProfileIdx;
+                    var friendsIdx = result[i].friendsIdx;
+                    var imgDiv = "";
+
+                    if(friendsProfileIdx == 0){
+                        imgDiv = "<img class='avatar-img' src='/images/1.jpg' alt=''>";
+                    }
+
+                    else{
+                        imgDiv = "<img class='avatar-img' src='/api/img/print/"+friendsProfileIdx+"' alt=''>";
+                    }
+
+                    appendHtml+= "<div class='card border-0'><div class='card-body'><div class='row align-items-center gx-5'><div class='col-auto'><a href='#' class='avatar '>"
+                    +imgDiv
+                    +"</a></div><div class='col'><h5>"+friendsName+"</h5></div><div class='col-auto'><div class='dropdown'><a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg></a><ul class='dropdown-menu'><li><a class='dropdown-item' href='#'>New message</a></li><li><hr class='dropdown-divider'></li><li><a class='dropdown-item text-danger blockUser' onclick='blockUserClick("+friendsIdx+")' href='#'>Block user</a></li></ul></div></div></div></div></div>";
+                }
+
+                 $("#friendsDiv").html(appendHtml);
+
+	        },
+	        error: function(request, status, error) {
+
+	        }
+	    });
+    }
+
+    //회원 탈퇴
+    function withdrawal(){
+        var userId = $("#userId").val();
+
+        var params = {
+            userId : userId
+        }
+
+        $.ajax({
+	         type : 'POST'
+	        ,url : "/withdrawal"
+	        ,dataType : 'json'
+	        ,data : JSON.stringify(params)
+	        ,contentType: 'application/json'
+	        ,success : function(result) {
+                alert("회원이 탈퇴되었습니다.");
+                location.href = "/auth/logout-proc";
+	        },
+	        error: function(request, status, error) {
+
+	        }
+	    });
 
     }
 

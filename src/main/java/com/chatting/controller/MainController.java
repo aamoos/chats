@@ -62,10 +62,10 @@ public class MainController {
         Users users = usersRepository.findByUserId(principal.getName());
 
         //친구 초대 리스트
-        List<FriendsInvite> friendsInvite = friendsInviteRepository.findByResponseUserId(principal.getName());
+        List<FriendsInvite> friendsInvite = friendsInviteRepository.selectReceiveHistory(principal.getName());
 
         //친구 리스트
-        List<Friends> friends = friendsRepository.findByUserId(principal.getName());
+        List<Friends> friends = friendsRepository.selectReciveNotification(principal.getName());
 
         //로그인한 사용자 정보 조회
         model.addAttribute("userInfo", users);
@@ -120,6 +120,39 @@ public class MainController {
     public Long responseYnUpdate(@RequestBody FriendsInvite friendsInvite, Principal principal){
         return mainService.responseYnUpdate(friendsInvite, principal);
     };
+
+    /**
+     * 친구검색
+     * @param friends
+     * @param principal
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(Url.MAIN.SEARCH_FRIENDS)
+    public List<Friends> searchFriends(@RequestBody Friends friends, Principal principal){
+        return friendsRepository.selectFriendsList(friends.getFriendsName(), principal.getName());
+    };
+
+    /**
+     * 친구 삭제처리
+     * @param friends
+     */
+    @ResponseBody
+    @PostMapping(Url.MAIN.BLOCK_FRIENDS_DELETE)
+    public void blockFriendsDelete(@RequestBody Friends friends){
+        mainService.blockFriendsDelete(friends);
+    };
+
+    /**
+     * 화원탈퇴
+     * @param friends
+     */
+    @ResponseBody
+    @PostMapping(Url.MAIN.WITHDRAWAL)
+    public void withdrawal(@RequestBody Friends friends){
+        usersService.withdrawal(friends.getUserId());
+    };
+
 
 
     /**
