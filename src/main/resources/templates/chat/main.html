@@ -367,13 +367,13 @@
                                                     </a>
 
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">New message</a></li>
+                                                        <li><a class="dropdown-item" href="#">메시지 보내기</a></li>
                                                         </li>
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item text-danger blockUser" th:onclick="|javascript:blockUserClick(${friends.friendsIdx})|" href="#">Block user</a>
+                                                            <a class="dropdown-item text-danger blockUser" th:onclick="|javascript:blockUserClick(${friends.friendsIdx})|" href="#">친구 차단</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -1484,7 +1484,7 @@
                     </li>
 
                     <li class="list-group-item">
-                        <a href="#" class="text-danger blockUser">Block User</a>
+                        <a href="#" class="text-danger blockUser">친구 차단</a>
                     </li>
                 </ul>
                 <!-- List -->
@@ -1892,7 +1892,7 @@
 
                     appendHtml+= "<div class='card border-0'><div class='card-body'><div class='row align-items-center gx-5'><div class='col-auto'><a href='#' class='avatar '>"
                     +imgDiv
-                    +"</a></div><div class='col'><h5>"+friendsName+"</h5></div><div class='col-auto'><div class='dropdown'><a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg></a><ul class='dropdown-menu'><li><a class='dropdown-item' href='#'>New message</a></li><li><hr class='dropdown-divider'></li><li><a class='dropdown-item text-danger blockUser' onclick='blockUserClick("+friendsIdx+")' href='#'>Block user</a></li></ul></div></div></div></div></div>";
+                    +"</a></div><div class='col'><h5>"+friendsName+"</h5></div><div class='col-auto'><div class='dropdown'><a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg></a><ul class='dropdown-menu'><li><a class='dropdown-item' href='#'>메시지 보내기</a></li><li><hr class='dropdown-divider'></li><li><a class='dropdown-item text-danger blockUser' onclick='blockUserClick("+friendsIdx+")' href='#'>친구 차단</a></li></ul></div></div></div></div></div>";
                 }
 
                  $("#friendsDiv").html(appendHtml);
