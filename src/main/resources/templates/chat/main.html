@@ -1906,27 +1906,31 @@
 
     //회원 탈퇴
     function withdrawal(){
-        var userId = $("#userId").val();
 
-        var params = {
-            userId : userId
+        var confirmResult = confirm("정말로 회원을 탈퇴하시겠습니까? 탈퇴후 해당 정보는 삭제처리 됩니다.");
+
+        if(confirmResult){
+            var userId = $("#userId").val();
+
+            var params = {
+                userId : userId
+            }
+
+            $.ajax({
+                 type : 'POST'
+                ,url : "/withdrawal"
+                ,dataType : 'json'
+                ,data : JSON.stringify(params)
+                ,contentType: 'application/json'
+                ,success : function(result) {
+                    alert("회원이 탈퇴되었습니다.");
+                    location.href = "/auth/logout-proc";
+                },
+                error: function(request, status, error) {
+
+                }
+            });
         }
-
-        $.ajax({
-	         type : 'POST'
-	        ,url : "/withdrawal"
-	        ,dataType : 'json'
-	        ,data : JSON.stringify(params)
-	        ,contentType: 'application/json'
-	        ,success : function(result) {
-                alert("회원이 탈퇴되었습니다.");
-                location.href = "/auth/logout-proc";
-	        },
-	        error: function(request, status, error) {
-
-	        }
-	    });
-
     }
 
 </script>
