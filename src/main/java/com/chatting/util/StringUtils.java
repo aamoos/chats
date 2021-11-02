@@ -74,7 +74,7 @@ public abstract class StringUtils {
 
     //널 빈값 체크
     public static boolean isStringEmpty(String str) {
-        return str == null || str.isEmpty();
+        return str == null || str.isEmpty() || str.equals("null");
     }
 
     //핸드폰번호 자동 하이픈

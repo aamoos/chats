@@ -2,22 +2,17 @@ package com.chatting.controller;
 
 import com.chatting.common.Url;
 import com.chatting.dto.UsersDto;
-import com.chatting.entity.Friends;
-import com.chatting.entity.FriendsInvite;
-import com.chatting.entity.Users;
-import com.chatting.repository.FriendsInviteRepository;
-import com.chatting.repository.FriendsRepository;
-import com.chatting.repository.UsersRepository;
+import com.chatting.entity.*;
+import com.chatting.repository.*;
+import com.chatting.service.ChatService;
 import com.chatting.service.MainService;
 import com.chatting.service.UsersService;
 import com.chatting.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
@@ -38,6 +33,9 @@ public class MainController {
     private final MainService mainService;
     private final FriendsInviteRepository friendsInviteRepository;
     private final FriendsRepository friendsRepository;
+    private final ChatService chatService;
+    private final ChatRoomContentRepository chatRoomContentRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     @GetMapping("/")
     public void root(HttpServletResponse res, Principal principal) throws Exception {
@@ -74,9 +72,38 @@ public class MainController {
         model.addAttribute("notification", friendsInvite);
         model.addAttribute("friends", friends);
 
-
         return Url.MAIN.MAIN_HTML;
     }
+
+    /**
+     * 채팅방 파라미터 리턴
+     * @param params
+     * @param principal
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(Url.MAIN.GET_CHAT_ROOM)
+    public List<ChatRoomContent> getChatRoom(@RequestBody Map<String, Object> params, Principal principal){
+
+        System.out.println(params.get("roomName"));
+        System.out.println(principal.getName());
+
+        //내 채팅방 리스트
+        List<ChatRoomContent> chattingRoom = chatRoomContentRepository.selectChattingRoom(principal.getName(), (String) params.get("roomName"));
+
+        List<ChatRoomContent> newChattingRoom = new ArrayList<ChatRoomContent>();
+        List<Long> idArray = new ArrayList<Long>();
+
+        //중복제거
+        for(int i=0; i<chattingRoom.size(); i++){
+            if(!idArray.contains(chattingRoom.get(i).getChatRoomIdx())){
+                idArray.add(chattingRoom.get(i).getChatRoomIdx());
+                newChattingRoom.add(chattingRoom.get(i));
+            }
+        }
+
+        return newChattingRoom;
+    };
 
     /**
      * 프로필 이미지 저장
@@ -158,9 +185,116 @@ public class MainController {
     /**
      * 채팅
      */
-    @GetMapping(Url.MAIN.CHAT)
-    public String chat(){
+    @GetMapping(Url.MAIN.CHAT+"/{chatRoomIdx}")
+    public String chat(HttpServletRequest req, Principal principal, Model model, @PathVariable("chatRoomIdx") Long chatRoomIdx){
+        System.out.println("chatRoomIdx : " + chatRoomIdx);
+
+        model.addAttribute("chatRoomIdx", chatRoomIdx);
+        model.addAttribute("chatUserId", principal.getName());
+
+        //방이름 설정
+        ChatRoom chatRoom =  chatRoomRepository.findByChatRoomIdx(chatRoomIdx);
+        chatRoom.setRoomName(req.getParameter("friendsName"));
+        chatRoomRepository.save(chatRoom);
+
+        model.addAttribute("chatRoomName", chatRoom.getRoomName());
+
         return Url.MAIN.CHAT_HTML;
     }
+
+    /**
+     * 채팅 메시지 돌려주기
+     * @param chatRoomContent
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(Url.MAIN.GET_CHAT_MESSAGE)
+    public List<ChatRoomContent> selectChatList(@RequestBody ChatRoomContent chatRoomContent){
+        return chatRoomContentRepository.findAllByChatRoomIdx(chatRoomContent.getChatRoomIdx());
+    }
+
+    /**
+     * 푸시토큰 가져오기
+     * @param friends
+     * @param principal
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(Url.MAIN.GET_CHAT_PUSH_TOKEN)
+    public List<Friends> getChatPushToken(@RequestBody Friends friends, Principal principal){
+        System.out.println(friends.getChatRoomIdx());
+        System.out.println(principal.getName());
+        return friendsRepository.findAllByChatRoomIdx(friends.getChatRoomIdx(), principal.getName());
+    }
+
+
+    /**
+     * 채팅방 생성 (메시지 보내기시)
+     * @param params
+     * @param req
+     * @param principal
+     * @param model
+     * @return
+     */
+    @PostMapping(Url.MAIN.MAKE_CHAT_ROOM)
+    @ResponseBody
+    public Long makeChatRoom(@RequestBody Map<String, Object> params, HttpServletRequest req, Principal principal, Model model){
+
+        //개인 톡일경우~~~~
+        System.out.println("chatRoomIdx : " + (String) params.get("chatRoomIdx"));
+        System.out.println("multipleYn : " + (String) params.get("multiYn"));
+
+        //생성된 룸번호가 없을경우 방생성
+        if( ((StringUtils.isStringEmpty((String) params.get("chatRoomIdx"))))
+                && "N".equals((String) params.get("multiYn"))){
+
+            System.out.println("타니????????????????");
+
+            String friendsId = (String) params.get("friendsId");
+            String userId = principal.getName();
+
+            ChatRoom chatRoom = new ChatRoom();
+
+            chatRoom.setMultiYn("N");
+            //방생성
+            Long chatRoomIdx = chatService.saveChatRoom(chatRoom);
+
+            System.out.println("chatRoomIdx : " + chatRoomIdx);
+
+            //채팅방 번호 idx 업데이트
+            Friends friends = friendsRepository.findByFriendsIdAndUserId(friendsId, principal.getName());
+            friends.setChatRoomIdx(chatRoomIdx.toString());
+            friendsRepository.save(friends);
+
+            Friends friends2 = friendsRepository.findByFriendsIdAndUserId(principal.getName(), friendsId);
+            friends2.setChatRoomIdx(chatRoomIdx.toString());
+            friendsRepository.save(friends2);
+            return chatRoomIdx;
+        }
+
+        //방번호가 있음
+        else{
+            Long chatRoomIdx = Long.parseLong((String) params.get("chatRoomIdx"));
+            return chatRoomIdx;
+        }
+    }
+
+    /**
+     * 채팅 보내기
+     * @param chatRoomContent
+     * @param req
+     * @param principal
+     * @param model
+     * @return
+     */
+    @PostMapping(Url.MAIN.SEND_CHAT_MESSAGE)
+    @ResponseBody
+    public Long sendChatMessage(@RequestBody ChatRoomContent chatRoomContent, HttpServletRequest req, Principal principal, Model model){
+        System.out.println(chatRoomContent.getChatRoomIdx());
+        System.out.println(chatRoomContent.getChatUserId());
+        System.out.println(chatRoomContent.getChatContents());
+        return chatService.saveChatRoomContent(chatRoomContent);
+    }
+
 
 }

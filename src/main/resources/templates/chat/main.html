@@ -367,7 +367,7 @@
                                                     </a>
 
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="#">메시지 보내기</a></li>
+                                                        <li><a class="dropdown-item" th:href="@{/chat(friendsId=${friends.friendsId}, friendsName=${friends.friendsName})}">메시지 보내기</a></li>
                                                         </li>
                                                         <li>
                                                             <hr class="dropdown-divider">
@@ -403,87 +403,20 @@
                             <div class="mb-6">
                                 <form action="#">
                                     <div class="input-group">
-                                        <div class="input-group-text">
+                                        <div th:onclick="goChattingRoom()" class="input-group-text">
                                             <div class="icon icon-lg">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                             </div>
                                         </div>
 
-                                        <input type="text" class="form-control form-control-lg ps-0" placeholder="채팅방 이름을 입력하세요" aria-label="Search for messages or users...">
+                                        <input id="roomName" type="text" class="form-control form-control-lg ps-0" placeholder="채팅방 이름을 입력하세요" aria-label="Search for messages or users...">
                                     </div>
                                 </form>
                             </div>
 
                             <!-- Chats -->
-                            <div class="card-list">
+                            <div id="chatRoomDiv" class="card-list">
 
-                                <!-- Card -->
-                                <a href="/chat" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-online">
-                                                    <img src="/images/6.jpg" alt="#" class="avatar-img">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Ollie Chandler</h5>
-                                                    <span class="text-muted extra-small ms-2">08:45 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        Hello! Yeah, I'm going to meet friend of mine at the departments stores now.
-                                                    </div>
-
-                                                    <div class="badge badge-circle bg-primary ms-5">
-                                                        <span>3</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <a href="chat-direct.html" class="card border-0 text-reset">
-                                    <div class="card-body">
-                                        <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar-group-trigon avatar-group-trigon-sm">
-                                                    <div class="avatar avatar-sm">
-                                                        <img class="avatar-img" src="/images/7.jpg" alt="#">
-                                                    </div>
-
-                                                    <div class="avatar avatar-sm">
-                                                        <img class="avatar-img" src="/images/9.jpg" alt="#">
-                                                    </div>
-
-                                                    <div class="avatar avatar-sm">
-                                                        <span class="avatar-text bg-primary">D</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Don Knight</h5>
-                                                    <span class="text-muted extra-small ms-2">08:35 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">
-                                                        I'm going to meet my friend of mine at the departments stores as soon as possible.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- .card-body -->
-                                </a>
-                                <!-- Card -->
 
                             </div>
                             <!-- Chats -->
@@ -1572,6 +1505,9 @@
 
 <script th:inline="javascript">
 
+    //채팅방 가져오기
+    goChattingRoom();
+
      //친구추가 거절
     $(".hideClick").click(function(){
 
@@ -1614,6 +1550,11 @@
     //친구목록 클릭
     $("#tab-friends").click(function(){
          friendsPage()
+    });
+
+    //채팅방클릭
+    $("#tab-chats").click(function(){
+         goChattingRoom();
     });
 
    //파일 현재 필드 갯수
@@ -1881,6 +1822,8 @@
                     var friendsProfileIdx = result[i].friendsProfileIdx;
                     var friendsIdx = result[i].friendsIdx;
                     var imgDiv = "";
+                    var friendsId = result[i].friendsId;
+                    var chatRoomIdx = result[i].chatRoomIdx;
 
                     if(friendsProfileIdx == 0){
                         imgDiv = "<img class='avatar-img' src='/images/1.jpg' alt=''>";
@@ -1892,7 +1835,7 @@
 
                     appendHtml+= "<div class='card border-0'><div class='card-body'><div class='row align-items-center gx-5'><div class='col-auto'><a href='#' class='avatar '>"
                     +imgDiv
-                    +"</a></div><div class='col'><h5>"+friendsName+"</h5></div><div class='col-auto'><div class='dropdown'><a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg></a><ul class='dropdown-menu'><li><a class='dropdown-item' href='#'>메시지 보내기</a></li><li><hr class='dropdown-divider'></li><li><a class='dropdown-item text-danger blockUser' onclick='blockUserClick("+friendsIdx+")' href='#'>친구 차단</a></li></ul></div></div></div></div></div>";
+                    +"</a></div><div class='col'><h5>"+friendsName+"</h5></div><div class='col-auto'><div class='dropdown'><a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg></a><ul class='dropdown-menu'><li><a class='dropdown-item' data-friendsId='"+friendsId+"' data-friendsName='"+friendsName+"' data-chatRoomIdx='"+chatRoomIdx+"' data-friendsIdx='"+friendsIdx+"' onclick='messageSend(this)'>메시지 보내기</a></li><li><hr class='dropdown-divider'></li><li><a class='dropdown-item text-danger blockUser' onclick='blockUserClick("+friendsIdx+")' href='#'>친구 차단</a></li></ul></div></div></div></div></div>";
                 }
 
                  $("#friendsDiv").html(appendHtml);
@@ -1932,5 +1875,114 @@
             });
         }
     }
+
+    //메시지 보내기
+    function messageSend(target){
+
+        console.log(target);
+        var friendsId = $(target).attr("data-friendsId");
+        var friendsName = $(target).attr("data-friendsName");
+        var chatRoomIdx = $(target).attr("data-chatRoomIdx");
+        var friendsIdx = $(target).attr("data-friendsIdx");
+        var multiYn = "N";
+
+        var params = {
+                 friendsId : friendsId
+                ,friendsName : friendsName
+                ,chatRoomIdx : chatRoomIdx
+                ,friendsIdx : friendsIdx
+                ,multiYn : multiYn
+            }
+
+            console.log(params);
+
+            $.ajax({
+                 type : 'POST'
+                ,url : "/makeChatRoom"
+                ,dataType : 'json'
+                ,data : JSON.stringify(params)
+                ,contentType: 'application/json'
+                ,success : function(result) {
+                    console.log(result);
+                    location.href="/chat/"+result+"?friendsName="+friendsName;
+                },
+                error: function(request, status, error) {
+
+                }
+            });
+    }
+
+    //채팅방 가져오기
+    function goChattingRoom(){
+
+        $("#chatRoomDiv").html("");
+
+        var params = {
+            roomName : $.trim($("#roomName").val())
+        }
+
+         $.ajax({
+         type : 'POST'
+        ,url : "/getChatRoom"
+        ,dataType : 'json'
+        ,data : JSON.stringify(params)
+        ,contentType: 'application/json'
+        ,success : function(result) {
+          console.log(result);
+
+          var appendHtml = "";
+
+          for(var i=0; i<result.length; i++){
+
+            var chatNickName = result[i].chatNickName
+            var chatContents = result[i].chatContents
+            var regDate = regDateFormat(result[i].regDate);
+            var chatRoomIdx = result[i].chatRoomIdx
+
+            appendHtml += "<a href='/chat/"+chatRoomIdx+"?friendsName="+chatNickName+"' class='card border-0 text-reset'>"
+                                    +"<div class='card-body'>"
+                                        +"<div class='row gx-5'>"
+                                            +"<div class='col-auto'>"
+                                                +"<div class='avatar avatar-online'>"
+                                                    +"<img src='/images/6.jpg' alt='#' class='avatar-img'>"
+                                                +"</div>"
+                                            +"</div>"
+
+                                            +"<div class='col'>"
+                                                +"<div class='d-flex align-items-center mb-3'>"
+                                                    +"<h5 class='me-auto mb-0'>"+chatNickName+"</h5>"
+                                                    +"<span class='text-muted extra-small ms-2'>"+regDate+"</span>"
+                                                +"</div>"
+
+                                                +"<div class='d-flex align-items-center'>"
+                                                    +"<div class='line-clamp me-auto'>"+chatContents+"</div>"
+
+                                                    +"<div class='badge badge-circle bg-primary ms-5'>"
+                                                        +"<span>3</span>"
+                                                    +"</div>"
+                                                +"</div>"
+                                            +"</div>"
+                                        +"</div>"
+                                    +"</div>"
+                                +"</a>";
+          }
+
+          $("#chatRoomDiv").html(appendHtml);
+
+        },
+        error: function(request, status, error) {
+
+        }
+    });
+}
+
+ function regDateFormat(date){
+    var dateArr = date.split(" ");
+    var timeArr = dateArr[1].split(":");
+
+    var hours = dateArr[1] < 12 ? "AM" : "PM";
+
+    return timeArr[0]+":"+timeArr[1]+" "+hours;
+  }
 
 </script>

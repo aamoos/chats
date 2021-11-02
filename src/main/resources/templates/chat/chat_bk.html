@@ -25,8 +25,6 @@
 
 <body>
 <input type="hidden" id="chatRoomIdx" th:value="${chatRoomIdx}" />
-<input type="hidden" id="chatUserId" th:value="${chatUserId}" />
-
 <!-- Layout -->
 <div class="layout overflow-hidden">
   <!-- Navigation -->
@@ -2389,8 +2387,8 @@
                     </div>
 
                     <div class="col overflow-hidden">
-                      <h5 class="text-truncate" th:text="${chatRoomName}"></h5>
-                      <!--<p class="text-truncate">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>-->
+                      <h5 class="text-truncate">Ollie Chandler</h5>
+                      <p class="text-truncate">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>
                     </div>
                   </div>
                 </div>
@@ -2424,7 +2422,7 @@
             <!-- Content -->
 
             <!-- Mobile: more -->
-            <div id="chatNaviBtn" class="col-2 d-xl-none text-end">
+            <div class="col-2 d-xl-none text-end">
               <a href="#" class="icon icon-lg text-muted" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-more" aria-controls="offcanvas-more">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
               </a>
@@ -2436,9 +2434,9 @@
         <!-- Chat: Header -->
 
         <!-- Chat: Content -->
-        <div  class="chat-body hide-scrollbar flex-1 h-100">
+        <div class="chat-body hide-scrollbar flex-1 h-100">
           <div class="chat-body-inner">
-            <div id="chatDiv" class="py-6 py-lg-12">
+            <div class="py-6 py-lg-12">
 
               <!-- Message -->
               <div class="message">
@@ -3256,7 +3254,7 @@
 
               <div class="col">
                 <div class="input-group">
-                  <textarea id="messageContent" class="form-control px-0" placeholder="Type your message..." rows="1" data-emoji-input="" data-autosize="true"></textarea>
+                  <textarea class="form-control px-0" placeholder="Type your message..." rows="1" data-emoji-input="" data-autosize="true"></textarea>
 
                   <a href="#" class="input-group-text text-body pe-0" data-emoji-btn="">
                                                 <span class="icon icon-lg">
@@ -3267,7 +3265,7 @@
               </div>
 
               <div class="col-auto">
-                <button type="button" onclick="messageSend()" class="btn btn-icon btn-primary rounded-circle ms-5">
+                <button class="btn btn-icon btn-primary rounded-circle ms-5">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
               </div>
@@ -3283,7 +3281,7 @@
   <!-- Chat -->
 
   <!-- Chat: Info -->
-  <div style="display:none;" class="offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-more">
+  <div class="offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-more">
     <!-- Offcanvas Header -->
     <div class="offcanvas-header py-4 py-lg-7 border-bottom">
       <a class="icon icon-lg text-muted" href="#" data-bs-dismiss="offcanvas">
@@ -3291,8 +3289,8 @@
       </a>
 
       <div class="visibility-xl-invisible overflow-hidden text-center">
-        <h5 class="text-truncate" th:text="${chatRoomName}">Ollie Chandler1111</h5>
-<!--        <p class="text-truncate">last seen 5 minutes ago</p>-->
+        <h5 class="text-truncate">Ollie Chandler</h5>
+        <p class="text-truncate">last seen 5 minutes ago</p>
       </div>
 
       <!-- Dropdown -->
@@ -3336,31 +3334,44 @@
 
     <!-- Offcanvas Body -->
     <div class="offcanvas-body hide-scrollbar">
+      <!-- Avatar -->
+      <div class="text-center py-10">
+        <div class="row gy-6">
+          <div class="col-12">
+            <div class="avatar avatar-xl mx-auto">
+              <img src="/images/2.jpg" alt="#" class="avatar-img">
 
+              <a href="#" class="badge badge-lg badge-circle bg-primary text-white border-outline position-absolute bottom-0 end-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <h4>Ollie Chandler</h4>
+            <p>Bootstrap is an open source <br> toolkit for developing web with <br> HTML, CSS, and JS.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar -->
 
       <!-- Tabs -->
       <ul class="nav nav-pills nav-justified" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="pill" href="#offcanvas-tab-invite" role="tab" aria-controls="offcanvas-tab-invite" aria-selected="true">
-            초대
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-tab-profile" role="tab" aria-controls="offcanvas-tab-profile" aria-selected="true">
-            설정
+          <a class="nav-link active" data-bs-toggle="pill" href="#offcanvas-tab-profile" role="tab" aria-controls="offcanvas-tab-profile" aria-selected="true">
+            Profile
           </a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-tab-media" role="tab" aria-controls="offcanvas-tab-media" aria-selected="true">
-            사진
+            Media
           </a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-tab-files" role="tab" aria-controls="offcanvas-tab-files" aria-selected="false">
-            파일
+            Files
           </a>
         </li>
       </ul>
@@ -4293,284 +4304,3 @@
 <script src="/js/template.js"></script>
 </body>
 </html>
-
-<script th:inline="javascript">
-
-  goChatPage();
-
-  //네비 버튼 클릭
-  $("#chatNaviBtn").click(function(){
-    $("#offcanvas-more").css("display", "block");
-  });
-
-  //메시지발송
-  function messageSend(){
-
-    if($("#messageContent").val() == ""){
-      return false;
-    }
-
-    //메시지발송
-    var params = {
-          chatRoomIdx : $("#chatRoomIdx").val()
-         ,chatUserId : $("#chatUserId").val()
-         ,chatContents : $.trim($("#messageContent").val())
-    }
-
-    console.log(params);
-
-    $.ajax({
-         type : 'POST'
-        ,url : "/sendChatMessage"
-        ,dataType : 'json'
-        ,data : JSON.stringify(params)
-        ,contentType: 'application/json'
-        ,success : function(result) {
-          console.log(result);
-          $("#messageContent").val("");
-          goChatPage();
-          pushSend($("#chatRoomIdx").val(), $.trim($("#messageContent").val()));
-        },
-        error: function(request, status, error) {
-
-        }
-    });
-  }
-
-  //메시지 가져오기
-  function goChatPage(){
-
-    $("#chatDiv").html("");
-
-    var params = {
-       chatRoomIdx : $("#chatRoomIdx").val()
-    }
-
-    console.log(params);
-
-    $.ajax({
-         type : 'POST'
-        ,url : "/getChatMessage"
-        ,dataType : 'json'
-        ,data : JSON.stringify(params)
-        ,contentType: 'application/json'
-        ,success : function(result) {
-          console.log(result);
-
-          for(var i=0; i<result.length; i++){
-
-             var chatUserId = result[i].chatUserId;
-             var chatContents = result[i].chatContents;
-
-             var chatProfileIdx = result[i].chatProfileIdx;
-             var regDate = regDateFormat(result[i].regDate);
-
-             var imgDiv = "";
-             console.log(chatProfileIdx);
-
-              var today = getToday();
-              if($("."+today).length == 0){
-                var timeMessage = "<div class='message-divider "+today+"'>"
-                              +"<small class='text-muted'>"+getTodayDate()+"</small>"
-                              +"</div>";
-                              $("#chatDiv").append(timeMessage);
-              }
-
-             if(chatProfileIdx == 0){
-                imgDiv = "<img class='avatar-img' src='/images/1.jpg' alt=''>";
-             }
-
-             else{
-                imgDiv = "<img class='avatar-img' src='/api/img/print/"+chatProfileIdx+"' alt=''>";
-             }
-
-             if(chatUserId == $("#chatUserId").val()){
-                var myMessage = "";
-                myMessage = "<div class='message message-out'>"
-                                +"<a href='#' data-bs-toggle='modal' data-bs-target='#modal-profile' class='avatar avatar-responsive'>"
-                                +imgDiv
-                                +"</a>"
-                          +"<div class='message-inner'>"
-                          +"<div class='message-body'>"
-                          +"<div class='message-content'>"
-                          +"<div class='message-text'>"
-                          +"<p>"+chatContents+"</p>"
-                          +"</div>"
-                          +"<div class='message-action'>"
-                          +"<div class='dropdown'>"
-                          +"<a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'>"
-                            +"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg>"
-                          +"</a>"
-                          +"<ul class='dropdown-menu'>"
-                            +"<li>"
-                              +"<hr class='dropdown-divider'>"
-                            +"</li>"
-                            +"<li>"
-                              +"<a class='dropdown-item d-flex align-items-center text-danger' href='#'>"
-                                +"<span class='me-auto'>삭제</span>"
-                                +"<div class='icon'>"
-                                  +"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>"
-                                +"</div>"
-                              +"</a>"
-                            +"</li>"
-                          +"</ul>"
-                        +"</div>"
-                      +"</div>"
-                    +"</div>"
-                  +"</div>"
-                  +"<div class='message-footer'>"
-                    +"<span class='extra-small text-muted'>"+regDate+"</span>"
-                  +"</div>"
-                +"</div>"
-              +"</div>";
-
-              $("#chatDiv").append(myMessage);
-           }
-
-           else{
-              var friendsMessage = "";
-              friendsMessage = "<div class='message'>"
-                                    +"<a href='#' data-bs-toggle='modal' data-bs-target='#modal-user-profile' class='avatar avatar-responsive'>"
-                                      +imgDiv
-                                    +"</a>"
-                                    +"<div class='message-inner'>"
-                                      +"<div class='message-body'>"
-                                        +"<div class='message-content'>"
-                                          +"<div class='message-text'>"
-                                            +"<p>"+chatContents+"</p>"
-                                          +"</div>"
-                                          +"<div class='message-action'>"
-                                            +"<div class='dropdown'>"
-                                              +"<a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'>"
-                                                +"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg>"
-                                              +"</a>"
-                                              +"<ul class='dropdown-menu'>"
-                                                +"<li>"
-                                                  +"<hr class='dropdown-divider'>"
-                                                +"</li>"
-                                                +"<li>"
-                                                  +"<a class='dropdown-item d-flex align-items-center text-danger' href='#'>"
-                                                    +"<span class='me-auto'>삭제</span>"
-                                                    +"<div class='icon'>"
-                                                      +"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-trash-2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path><line x1='10' y1='11' x2='10' y2='17'></line><line x1='14' y1='11' x2='14' y2='17'></line></svg>"
-                                                    +"</div>"
-                                                  +"</a>"
-                                                +"</li>"
-                                              +"</ul>"
-                                            +"</div>"
-                                          +"</div>"
-                                        +"</div>"
-                                      +"</div>"
-                                      +"<div class='message-footer'>"
-                                        +"<span class='extra-small text-muted'>"+regDate+" </span>"
-                                      +"</div>"
-                                    +"</div>"
-                                  +"</div>";
-               $("#chatDiv").append(friendsMessage);
-
-            }
-          }
-
-          $(".message-footer:last").attr("tabindex", -1).focus();
-
-        },
-        error: function(request, status, error) {
-
-        }
-    });
-  }
-
-  function regDateFormat(date){
-    var dateArr = date.split(" ");
-    var timeArr = dateArr[1].split(":");
-
-    var hours = dateArr[1] < 12 ? "AM" : "PM";
-
-    return timeArr[0]+":"+timeArr[1]+" "+hours;
-  }
-
-  function getToday(){
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = ("0" + (1 + date.getMonth())).slice(-2);
-    var day = ("0" + date.getDate()).slice(-2);
-
-    return year + month + day;
-  }
-
-  function getTodayDate(){
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = ("0" + (1 + date.getMonth())).slice(-2);
-    var day = ("0" + date.getDate()).slice(-2);
-
-    var label = getInputDayLabel(year+"-"+month+"-"+day);
-
-    return year +"년 "+ month +"월 "+ day+"일 "+label;
-  }
-
-  function getInputDayLabel(date) {
-
-    var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
-
-    var today = new Date(date).getDay();
-    var todayLabel = week[today];
-
-    return todayLabel;
-  }
-
-      //푸시발송 예제
-      function pushSend(chatRoomIdx, chatContents){
-
-        var title = chatContents;
-        var body = chatContents;
-
-        var params = {
-          chatRoomIdx : chatRoomIdx
-        }
-
-        $.ajax({
-          type : 'POST'
-          ,url : "/getChatPushToken"
-          ,dataType : 'json'
-          ,data : JSON.stringify(params)
-          ,contentType: 'application/json'
-          ,success : function(result) {
-
-            console.log(result);
-
-            for(var i=0; i<result.length; i++){
-
-              var token = result[i].token;
-
-              var params2 = {
-                  title : title
-                  ,body : body
-                  ,token : token
-              }
-            }
-             console.log(params2);
-            $.ajax({
-              type : 'POST'
-              ,url : "/pushSend"
-              ,dataType : 'json'
-              ,data : JSON.stringify(params2)
-              ,contentType: 'application/json'
-              ,success : function(result) {
-
-              },
-             error: function(request, status, error) {
-
-            }
-           })
-
-          },
-          error: function(request, status, error) {
-
-          }
-      })
-  }
-
-
-
-</script>

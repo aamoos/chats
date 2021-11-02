@@ -77,6 +77,7 @@ public final class Url {
 
         /** 푸시 발송 */
         public static final String PUSH_SEND = "/pushSend";
+
     }
 
     /** 메인 */
@@ -110,6 +111,21 @@ public final class Url {
         /** 채팅 */
         public static final String CHAT = "/chat";
         public static final String CHAT_HTML = "chat/chat";
+
+        /** 채팅방 만들기 */
+        public static final String MAKE_CHAT_ROOM = "/makeChatRoom";
+
+        /** 채팅 보내기 */
+        public static final String SEND_CHAT_MESSAGE = "/sendChatMessage";
+
+        /** 채팅 가져오기 */
+        public static final String GET_CHAT_MESSAGE = "/getChatMessage";
+
+        /** 채팅방 가져오기 */
+        public static final String GET_CHAT_ROOM = "/getChatRoom";
+
+        /** 채팅방에 있는 사람들 push token 가져오기 (나뺴고) */
+        public static final String GET_CHAT_PUSH_TOKEN = "/getChatPushToken";
     }
 
 }

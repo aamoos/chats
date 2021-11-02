@@ -32,5 +32,9 @@ public class Friends {
     private String friendsName;
 
     private Long friendsProfileIdx;
+
+    private String chatRoomIdx;
+
+    private String token;
 }
 
