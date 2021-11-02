@@ -4329,7 +4329,7 @@
           console.log(result);
           $("#messageContent").val("");
           goChatPage();
-          pushSend($("#chatRoomIdx").val(), $.trim($("#messageContent").val()));
+          pushSend( $("#chatRoomIdx").val() );
         },
         error: function(request, status, error) {
 
@@ -4520,8 +4520,8 @@
   }
 
       //푸시발송 예제
-      function pushSend(chatRoomIdx, chatContents){
-
+      function pushSend(chatRoomIdx){
+        alert(chatContents);
         var params = {
           chatRoomIdx : chatRoomIdx
         }
@@ -4541,8 +4541,8 @@
               var token = result[i].token;
 
               var params2 = {
-                  title : chatContents
-                  ,body : chatContents
+                  title : $.trim($("#messageContent").val())
+                  ,body : $.trim($("#messageContent").val())
                   ,token : token
               }
             }
