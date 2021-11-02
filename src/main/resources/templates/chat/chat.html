@@ -4522,9 +4522,6 @@
       //푸시발송 예제
       function pushSend(chatRoomIdx, chatContents){
 
-        var title = chatContents;
-        var body = chatContents;
-
         var params = {
           chatRoomIdx : chatRoomIdx
         }
@@ -4544,8 +4541,8 @@
               var token = result[i].token;
 
               var params2 = {
-                  title : title
-                  ,body : body
+                  title : chatContents
+                  ,body : chatContents
                   ,token : token
               }
             }
