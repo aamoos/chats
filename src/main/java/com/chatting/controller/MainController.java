@@ -205,6 +205,9 @@ public class MainController {
         model.addAttribute("chatRoomIdx", chatRoomIdx);
         model.addAttribute("chatUserId", principal.getName());
 
+        Users users = usersRepository.findByUserId(principal.getName());
+        model.addAttribute("chatUserName", users.getNickName());
+
         //방이름 설정
         ChatRoom chatRoom =  chatRoomRepository.findByChatRoomIdx(chatRoomIdx);
         chatRoom.setRoomName(req.getParameter("friendsName"));

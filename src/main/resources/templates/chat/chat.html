@@ -26,6 +26,7 @@
 <body>
 <input type="hidden" id="chatRoomIdx" th:value="${chatRoomIdx}" />
 <input type="hidden" id="chatUserId" th:value="${chatUserId}" />
+<input type="hidden" id="chatUserName" th:value="${chatUserName}" />
 
 <!-- Layout -->
 <div class="layout overflow-hidden">
@@ -4526,7 +4527,7 @@
 
     var params = {
        chatRoomIdx : $("#chatRoomIdx").val()
-      ,title :  $.trim($("#messageContent").val())
+      ,title : $("#chatUserName").val()
       ,body :  $.trim($("#messageContent").val())
     }
 
