@@ -19,21 +19,11 @@ public class AndroidPushPeriodicNotifications {
 
         //String sampleData[] = {"device token value 1","device token value 2","device token value 3"};
         String token = push.getToken();
-        String sampleData[] = token.split(",");
 
         JSONObject body = new JSONObject();
 
-        List<String> tokenlist = new ArrayList<String>();
-
-        for(int i=0; i<sampleData.length; i++){
-            tokenlist.add(sampleData[i]);
-        }
-
         JSONArray array = new JSONArray();
-
-        for(int i=0; i<tokenlist.size(); i++) {
-            array.put(tokenlist.get(i));
-        }
+        array.put(token);
 
         body.put("registration_ids", array);
 

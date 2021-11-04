@@ -40,9 +40,10 @@ public class MainController {
     private final PushService pushService;
 
     @GetMapping("/")
-    public void root(HttpServletResponse res, Principal principal) throws Exception {
+    public void root(HttpServletRequest req, HttpServletResponse res, Principal principal) throws Exception {
 
         if(principal != null){
+            System.out.println("token 값 : " + req.getParameter("token"));
             res.sendRedirect(Url.MAIN.MAIN);
         }
 
