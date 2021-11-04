@@ -43,7 +43,17 @@ public class MainController {
     public void root(HttpServletRequest req, HttpServletResponse res, Principal principal) throws Exception {
 
         if(principal != null){
-            System.out.println("token 값 : " + req.getParameter("token"));
+
+            String token = req.getParameter("token");
+
+            //토큰값 업데이트
+            if(token != null){
+                Users users = usersRepository.findByUserId(principal.getName());
+                users.setToken(token);
+                usersRepository.save(users);
+            }
+
+
             res.sendRedirect(Url.MAIN.MAIN);
         }
 
