@@ -6,6 +6,7 @@ import com.chatting.notification.AndroidPushPeriodicNotifications;
 import com.chatting.repository.PushRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class ScheduleTask {
                     CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
                     CompletableFuture.allOf(pushNotification).join();
                     String firebaseResponse = pushNotification.get();
-                    log.debug("firebaseResponse={}", firebaseResponse);
+                    System.out.println("머야 : " + firebaseResponse);
                     selectPush.setSendYn("Y");
                     pushRepository.save(selectPush);
                 }
