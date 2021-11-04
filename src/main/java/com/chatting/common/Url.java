@@ -124,8 +124,8 @@ public final class Url {
         /** 채팅방 가져오기 */
         public static final String GET_CHAT_ROOM = "/getChatRoom";
 
-        /** 채팅방에 있는 사람들 push token 가져오기 (나뺴고) */
-        public static final String GET_CHAT_PUSH_TOKEN = "/getChatPushToken";
+        /** 채팅방에 있는 사람들 push 보내기 (나뺴고) */
+        public static final String SEND_CHAT_PUSH = "/sendChatPush";
     }
 
 }

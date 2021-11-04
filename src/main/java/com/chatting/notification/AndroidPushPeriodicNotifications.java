@@ -1,5 +1,6 @@
 package com.chatting.notification;
 
+import com.chatting.entity.Push;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,11 +14,11 @@ import java.util.Map;
 
 public class AndroidPushPeriodicNotifications {
 
-    public static String PeriodicNotificationJson(Map<String, Object> params) throws Exception {
+    public static String PeriodicNotificationJson(Push push) throws Exception {
         LocalDate localDate = LocalDate.now();
 
         //String sampleData[] = {"device token value 1","device token value 2","device token value 3"};
-        String token = (String) params.get("token");
+        String token = push.getToken();
         String sampleData[] = token.split(",");
 
         JSONObject body = new JSONObject();
@@ -38,9 +39,8 @@ public class AndroidPushPeriodicNotifications {
 
         JSONObject notification = new JSONObject();
 
-        notification.put("title", URLEncoder.encode((String) params.get("title"), "UTF-8"));
-        notification.put("body", URLEncoder.encode((String) params.get("body"), "UTF-8"));
-
+        notification.put("title", URLEncoder.encode(push.getTitle(), "UTF-8"));
+        notification.put("body", URLEncoder.encode(push.getBody(), "UTF-8"));
         body.put("notification", notification);
 
         System.out.println(body.toString());

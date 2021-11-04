@@ -4327,9 +4327,12 @@
         ,contentType: 'application/json'
         ,success : function(result) {
           console.log(result);
-          $("#messageContent").val("");
+
+          //채팅 메시지 가져오기
           goChatPage();
-          pushSend( $("#chatRoomIdx").val() );
+
+          //푸시 가져오기
+          pushSend();
         },
         error: function(request, status, error) {
 
@@ -4483,7 +4486,6 @@
   function regDateFormat(date){
     var dateArr = date.split(" ");
     var timeArr = dateArr[1].split(":");
-
     var hours = dateArr[1] < 12 ? "AM" : "PM";
 
     return timeArr[0]+":"+timeArr[1]+" "+hours;
@@ -4519,53 +4521,32 @@
     return todayLabel;
   }
 
-      //푸시발송 예제
-      function pushSend(chatRoomIdx){
+  //푸시발송 예제
+  function pushSend(){
 
-        var params = {
-          chatRoomIdx : chatRoomIdx
+    var params = {
+       chatRoomIdx : $("#chatRoomIdx").val()
+      ,title :  $.trim($("#messageContent").val())
+      ,body :  $.trim($("#messageContent").val())
+    }
+
+    console.log(params);
+
+    $.ajax({
+         type : 'POST'
+        ,url : "/sendChatPush"
+        ,dataType : 'json'
+        ,data : JSON.stringify(params)
+        ,contentType: 'application/json'
+        ,success : function(result) {
+          $("#messageContent").val("");
+        },
+        error: function(request, status, error) {
+
         }
+    });
 
-        $.ajax({
-          type : 'POST'
-          ,url : "/getChatPushToken"
-          ,dataType : 'json'
-          ,data : JSON.stringify(params)
-          ,contentType: 'application/json'
-          ,success : function(result) {
 
-            console.log(result);
-
-            for(var i=0; i<result.length; i++){
-
-              var token = result[i].token;
-
-              var params2 = {
-                  title : $.trim($("#messageContent").val())
-                  ,body : $.trim($("#messageContent").val())
-                  ,token : token
-              }
-            }
-             console.log(params2);
-            $.ajax({
-              type : 'POST'
-              ,url : "/pushSend"
-              ,dataType : 'json'
-              ,data : JSON.stringify(params2)
-              ,contentType: 'application/json'
-              ,success : function(result) {
-
-              },
-             error: function(request, status, error) {
-
-            }
-           })
-
-          },
-          error: function(request, status, error) {
-
-          }
-      })
   }
 
 

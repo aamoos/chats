@@ -6,6 +6,7 @@ import com.chatting.entity.*;
 import com.chatting.repository.*;
 import com.chatting.service.ChatService;
 import com.chatting.service.MainService;
+import com.chatting.service.PushService;
 import com.chatting.service.UsersService;
 import com.chatting.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class MainController {
     private final ChatService chatService;
     private final ChatRoomContentRepository chatRoomContentRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final PushService pushService;
 
     @GetMapping("/")
     public void root(HttpServletResponse res, Principal principal) throws Exception {
@@ -214,17 +216,16 @@ public class MainController {
     }
 
     /**
-     * 푸시토큰 가져오기
-     * @param friends
+     * 푸시 저장하기
+     * @param params
      * @param principal
-     * @return
      */
     @ResponseBody
-    @PostMapping(Url.MAIN.GET_CHAT_PUSH_TOKEN)
-    public List<Friends> getChatPushToken(@RequestBody Friends friends, Principal principal){
-        System.out.println(friends.getChatRoomIdx());
-        System.out.println(principal.getName());
-        return friendsRepository.findAllByChatRoomIdx(friends.getChatRoomIdx(), principal.getName());
+    @PostMapping(Url.MAIN.SEND_CHAT_PUSH)
+    public void getChatPushToken(@RequestBody Map<String, Object> params, Principal principal){
+        System.out.println(params.get("chatRoomIdx"));
+        pushService.savePush(params, principal);
+
     }
 
 
