@@ -14,68 +14,71 @@ public interface FriendsRepository extends CrudRepository<Friends, Long> {
     //받은 이력 조회
     @Query(value =
             "SELECT \n"+
-                    "T1.FRIENDS_IDX\n"+
-                    ",T1.USER_ID\n"+
-                    ",(SELECT T2.NICK_NAME FROM USERS T2 WHERE T2.USER_ID = T1.FRIENDS_ID) AS FRIENDS_NAME\n"+
-                    ",(SELECT T2.PROFILE_IDX FROM USERS T2 WHERE T2.USER_ID = T1.FRIENDS_ID) AS FRIENDS_PROFILE_IDX\n"+
-                    ",T1.FRIENDS_ID\n"+
+                    "T1.IDX\n"+
+                    ",T1.USER_IDX\n"+
+                    ",(SELECT T2.NICK_NAME FROM USERS T2 WHERE T2.USER_IDX = T1.FRIENDS_IDX) AS FRIENDS_NAME\n"+
+                    ",(SELECT T2.PROFILE_IDX FROM USERS T2 WHERE T2.USER_IDX = T1.FRIENDS_IDX) AS FRIENDS_PROFILE_IDX\n"+
+                    ",T1.FRIENDS_IDX\n"+
                     ",T1.REG_DATE\n"+
                     ",T1.CHAT_ROOM_IDX\n"+
                     ",T1.TOKEN\n"+
+                    ",T1.USE_YN\n"+
                     "FROM \n"+
                     "friends T1\n"+
                     "WHERE\n"+
-                    "T1.USER_ID = :userId\n"
+                    "T1.USER_IDX = :userIdx\n"
             , nativeQuery = true
     )
-    List<Friends> selectReciveNotification(String userId);
+    List<Friends> selectReciveNotification(Long userIdx);
 
     //친구검색
-    //받은 이력 조회
     @Query(value =
             "SELECT \n"+
-                    "T1.FRIENDS_IDX\n"+
-                    ",T1.USER_ID\n"+
-                    ",(SELECT T2.NICK_NAME FROM USERS T2 WHERE T2.USER_ID = T1.FRIENDS_ID) AS FRIENDS_NAME\n"+
-                    ",(SELECT T2.PROFILE_IDX FROM USERS T2 WHERE T2.USER_ID = T1.FRIENDS_ID) AS FRIENDS_PROFILE_IDX\n"+
-                    ",T1.FRIENDS_ID\n"+
+                    "T1.IDX\n"+
+                    ",T1.USER_IDX\n"+
+                    ",(SELECT T2.NICK_NAME FROM USERS T2 WHERE T2.USER_IDX = T1.FRIENDS_IDX) AS FRIENDS_NAME\n"+
+                    ",(SELECT T2.PROFILE_IDX FROM USERS T2 WHERE T2.USER_IDX = T1.FRIENDS_IDX) AS FRIENDS_PROFILE_IDX\n"+
+                    ",T1.FRIENDS_IDX\n"+
                     ",T1.REG_DATE\n"+
                     ",T1.CHAT_ROOM_IDX\n"+
                     ",T1.TOKEN\n"+
+                    ",T1.USE_YN\n"+
                     "FROM \n"+
                     "friends T1\n"+
                     "WHERE\n"+
-                    "T1.USER_ID = :userId\n"+
-                    "AND (SELECT T2.NICK_NAME FROM USERS T2 WHERE T2.USER_ID = T1.FRIENDS_ID) LIKE CONCAT('%',:friendsName,'%')\n"
+                    "T1.USER_IDX = :userIdx\n"+
+                    "AND (SELECT T2.NICK_NAME FROM USERS T2 WHERE T2.USER_IDX = T1.FRIENDS_IDX) LIKE CONCAT('%',:friendsName,'%')\n"+
+                    "AND T1.USE_YN = 'Y'\n"
             , nativeQuery = true
     )
-    List<Friends> selectFriendsList(String friendsName, String userId);
+    List<Friends> selectFriendsList(String friendsName, Long userIdx);
 
-    Friends findByFriendsIdAndUserId(String friendsId, String userId);
+    Friends findByFriendsIdxAndUserIdxAndUseYn(Long friendsIdx, Long userIdx, String useYn);
 
-    Friends findByFriendsIdx(Long friendsIdx);
+    Friends findByIdx(Long idx);
 
-    List<Friends> findAllByFriendsIdOrUserId(String friendsId, String userId);
+    List<Friends> findAllByFriendsIdxOrUserIdx(Long friendsIdx, Long userIdx);
 
     @Query(value =
             "SELECT \n"+
-                    "T1.FRIENDS_ID\n"+
+                    "T1.IDX\n"+
                     ",T1.FRIENDS_IDX\n"+
                     ",T1.CHAT_ROOM_IDX\n"+
                     ",T1.FRIENDS_NAME\n"+
                     ",T1.FRIENDS_PROFILE_IDX\n"+
                     ",T1.REG_DATE\n"+
-                    ",T1.USER_ID\n"+
+                    ",T1.USER_IDX\n"+
                     ",T2.TOKEN\n"+
+                    ",T1.USE_YN\n"+
                     "FROM \n"+
                     "friends T1\n"+
                     ",users T2\n"+
                     "WHERE\n"+
-                    "T1.USER_ID = T2.USER_ID\n"+
+                    "T1.USER_IDX = T2.USER_IDX\n"+
                     "AND T1.CHAT_ROOM_IDX = :chatRoomIdx\n"+
-                    "AND T1.USER_ID = T2.USER_ID\n"+
-                    "AND T1.USER_ID != :userId\n"
+                    "AND T1.USER_IDX != :userIdx\n"+
+                    "AND T1.USE_YN = 'Y'\n"
             , nativeQuery = true
     )
-    List<Friends> findAllByChatRoomIdx(String chatRoomIdx, String userId);
+    List<Friends> selectChatPushList(String chatRoomIdx, Long userIdx);
 }

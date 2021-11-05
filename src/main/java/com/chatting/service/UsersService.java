@@ -78,11 +78,11 @@ public class UsersService {
             UsersDto usersDto = new UsersDto(userId, password, handPhoneNo, nickName, "Y", token, 0L);
 
             //회원 등록
-            usersRepository.save(usersDto.toEntity());
+            Long userIdx = usersRepository.save(usersDto.toEntity()).getUserIdx();
 
             //권한설정
             UsersAuthority userAuthority = new UsersAuthority();
-            userAuthority.setUserId(usersDto.getUserId());
+            userAuthority.setUserIdx(userIdx);
             userAuthority.setAuthority("USER");
             usersAuthorityRepository.save(userAuthority);
 
@@ -152,32 +152,36 @@ public class UsersService {
 
     /**
      * 프로필 이미지 저장
-     * @param usersDto
+     * @param users
      * @return
      */
-    public Long saveProfileImg(UsersDto usersDto){
+    public Long saveProfileImg(Users users){
         //프로필 이미지 저장
-        Users users = usersRepository.findByUserId(usersDto.getUserId());
-        users.setProfileIdx(usersDto.getProfileIdx());
-        return usersRepository.save(users).getUserIdx();
+        Users users1 = usersRepository.findByUserIdxAndUseYn(users.getUserIdx(), "Y");
+        users1.setProfileIdx(users.getProfileIdx());
+        return usersRepository.save(users1).getUserIdx();
     }
 
     /**
      * 회원탈퇴
-     * @param userId
+     * @param params
      */
-    public void withdrawal(String userId){
+    public void withdrawal(Map<String, Object> params){
+
+        Long userIdx = (Long) params.get("userIdx");
 
         //친구테이블에 삭제하려는 아이디가 friends_id 또는 user_id면 다삭제
-        List<Friends> friends = friendsRepository.findAllByFriendsIdOrUserId(userId, userId);
+        List<Friends> friends = friendsRepository.findAllByFriendsIdxOrUserIdx(userIdx, userIdx);
         friendsRepository.deleteAll(friends);
 
-        //사용자 테이블 삭제
-        Users users = usersRepository.findByUserId(userId);
-        usersRepository.delete(users);
+        //사용자 테이블 삭제 (논리삭제)
+        //todo 나중에 스케줄러 돌려서 일정기간 지나면 논리삭제로 된 아이디들 전부 삭제하는 처리가 필요할듯?
+        Users users = usersRepository.findByUserIdxAndUseYn(userIdx, "Y");
+        users.setUseYn("N");
+        usersRepository.save(users);
 
         //권한 삭제
-        UsersAuthority usersAuthority = usersAuthorityRepository.findByUserId(userId).get(0);
+        UsersAuthority usersAuthority = usersAuthorityRepository.findByUserIdx(userIdx).get(0);
         usersAuthorityRepository.delete(usersAuthority);
 
     }

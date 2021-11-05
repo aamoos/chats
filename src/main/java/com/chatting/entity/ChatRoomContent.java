@@ -22,7 +22,7 @@ public class ChatRoomContent {
 
     private String chatContents;
 
-    private String chatUserId;
+    private Long chatUserIdx;
 
     private String fileIdxs;
 
@@ -31,6 +31,8 @@ public class ChatRoomContent {
     private String chatNickName;
 
     private String chatRoomName;
+
+    private String chatRoomType;
 
     @CreatedDate
     private String regDate;

@@ -19,7 +19,7 @@ public class UsersAuthority implements GrantedAuthority{
 
     //사용자 id
     @Column(columnDefinition = "varchar(45) not null comment '사용자 아이디'")
-    private String userId;
+    private Long userIdx;
 
     //사용자 권한
     @Column(columnDefinition = "varchar(45) not null comment '권한'")
@@ -33,7 +33,7 @@ public class UsersAuthority implements GrantedAuthority{
 
     @Builder
     public UsersAuthority(String userId, String authority) {
-        this.userId = userId;
+        this.userIdx = userIdx;
         this.authority = authority;
     }
 

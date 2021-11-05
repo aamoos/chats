@@ -17,13 +17,13 @@ public class FriendsInvite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long friendsIdx;
+    private Long idx;
 
     //친구 요청한 유저 idx
-    private String requestUserId;
+    private Long requestUserIdx;
 
     //친구 요청받은 유저 idx
-    private String responseUserId;
+    private Long responseUserIdx;
 
     //아직 응답을 읽지않는 상태 null, 거절하면 N, 받으면 Y
     private String responseYn;

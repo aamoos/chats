@@ -26,7 +26,7 @@
 <form id="login-form" action="friends.html" method="get">
     <input id="serialNo" name="serialNo" type="number" placeholder="인증번호를 입력해주세요." maxlength="6" />
 
-    <input type="button" value="인증번호 재발송" onclick="emailSend()" />
+    <input type="button" value="인증번호 재발송" onclick="emailRepeatSend()" />
     <input type="button" value="확인" onclick="checkSerialNo()" />
 
 </form>
@@ -42,6 +42,12 @@
 
     //이메일 발송
     emailSend();
+
+    //이메일 재발송 클릭시
+    function emailRepeatSend(){
+        emailSend();
+        alert("이메일 재발송이 되었습니다.");
+    }
 
     //이메일 발송
     function emailSend(){
@@ -141,7 +147,7 @@
 	    })
     }
 
-    //인증번호 체크크
+    //인증번호 체크
    function checkSerialNo(){
 
         var serialNo = $("#serialNo").val();
@@ -160,8 +166,15 @@
 	        ,contentType: 'application/json'
 	        ,success : function(result) {
 
+                console.log("=======================")
+                console.log(result);
+
 	            if(result.resultCode == 'success'){
                     location.href = "/";
+	            }
+
+	            else{
+	                alert("인증번호를 다시 확인해주세요");
 	            }
 
 	        },

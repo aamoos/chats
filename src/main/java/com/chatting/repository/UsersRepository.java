@@ -15,12 +15,12 @@ public interface UsersRepository extends CrudRepository<Users, Long> {
     boolean existsByUserIdAndUseYn(String userId, String useYn);
 
     //아이디로 검색
-    Users findByUserIdAndUseYn(String userId, String useYn);
+    Users findByUserIdxAndUseYn(Long userIdx, String useYn);
 
     //아이디 찾기
     Users findByHandPhoneNoAndNickNameAndUseYn(String handPhoneNo, String nickName, String useYn);
 
-    //이름으로 찾기
-    Users findByUserId(String userId);
+    //아이디 찾기
+    Users findByUserIdAndUseYn(String userId,String useYn);
 
 }

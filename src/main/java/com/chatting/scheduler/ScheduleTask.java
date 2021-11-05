@@ -25,7 +25,7 @@ public class ScheduleTask {
     private final AndroidPushNotificationsService androidPushNotificationsService;
     private final PushRepository pushRepository;
 
-    @Scheduled(fixedDelay = 2000)
+   // @Scheduled(fixedDelay = 2000)
     public void sendPush() throws Exception {
 
         System.out.println("푸시발송");

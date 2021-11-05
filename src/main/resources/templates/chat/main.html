@@ -367,13 +367,13 @@
                                                     </a>
 
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" th:href="@{/chat(friendsId=${friends.friendsId}, friendsName=${friends.friendsName})}">메시지 보내기</a></li>
+                                                        <li><a class="dropdown-item">메시지 보내기</a></li>
                                                         </li>
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item text-danger blockUser" th:onclick="|javascript:blockUserClick(${friends.friendsIdx})|" href="#">친구 차단</a>
+                                                            <a class="dropdown-item text-danger blockUser" th:onclick="|javascript:blockUserClick(${friends.idx})|" href="#">친구 차단</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -477,10 +477,10 @@
                                     <div class="card-footer">
                                         <div class="row gx-4">
                                             <div class="col">
-                                                <a th:attr="friendsIdx=${notification.friendsIdx}" href="#" class="btn btn-sm btn-soft-primary w-100 hideClick">Hide</a>
+                                                <a th:attr="idx=${notification.idx}" href="#" class="btn btn-sm btn-soft-primary w-100 hideClick">Hide</a>
                                             </div>
                                             <div class="col">
-                                                <a th:attr="friendsIdx=${notification.friendsIdx}, requestUserId=${notification.requestUserId}, responseUserId=${notification.responseUserId}"  href="#" class="btn btn-sm btn-primary w-100 confirmClick">Confirm</a>
+                                                <a th:attr="idx=${notification.idx}, requestUserIdx=${notification.requestUserIdx}, responseUserIdx=${notification.responseUserIdx}"  href="#" class="btn btn-sm btn-primary w-100 confirmClick">Confirm</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1226,6 +1226,7 @@
                                 <h5>이메일</h5>
                                 <p th:text="${userInfo.userId}">william@studio.com</p>
                                 <input type="hidden" id="userId" th:value="${userInfo.userId}" />
+                                <input type="hidden" id="userIdx" th:value="${userInfo.userIdx}" />
                             </div>
 
                             <div class="col-auto">
@@ -1511,10 +1512,10 @@
      //친구추가 거절
     $(".hideClick").click(function(){
 
-        var friendsIdx = $(this).attr("friendsIdx");
+        var idx = $(this).attr("idx");
 
         var params = {
-	         friendsIdx : friendsIdx
+	         idx : idx
 	         ,responseYn : 'N'
 	    }
 
@@ -1525,15 +1526,15 @@
     //친구추가 승낙
     $(".confirmClick").click(function(){
 
-        var friendsIdx = $(this).attr("friendsIdx");
-        var requestUserId = $(this).attr("requestUserId");
-        var responseUserId = $(this).attr("responseUserId");
+        var idx = $(this).attr("idx");
+        var requestUserIdx = $(this).attr("requestUserIdx");
+        var responseUserIdx = $(this).attr("responseUserIdx");
 
         var params = {
-	         friendsIdx : friendsIdx
+	         idx : idx
 	         ,responseYn : 'Y'
-	         ,requestUserId : requestUserId
-	         ,responseUserId : responseUserId
+	         ,requestUserIdx : requestUserIdx
+	         ,responseUserIdx : responseUserIdx
 	    }
         console.log(params);
 	    responseYnUpdate(params);
@@ -1645,7 +1646,7 @@
 		//step2. 게시판 등록
 		var params = {
 			  profileIdx : fileIdx
-			 ,userId : $("#userId").val()
+			 ,userIdx : $("#userIdx").val()
 		}
 
 	    console.log(params);
@@ -1732,6 +1733,8 @@
 	        ,message : message
 	    }
 
+        console.log(params);
+
         $.ajax({
             url: "/friendsInvite"
             ,type: "POST"
@@ -1752,6 +1755,8 @@
     //responseYn 업데이트
     function responseYnUpdate(params){
 
+        console.log(params);
+
         $.ajax({
             url: "/responseYnUpdate"
             ,type: "POST"
@@ -1771,10 +1776,10 @@
     }
 
     //블락유저
-    function blockUserClick(friendsIdx){
+    function blockUserClick(idx){
 
        var params = {
-            friendsIdx : friendsIdx
+            idx : idx
        }
 
         $.ajax({
@@ -1785,7 +1790,8 @@
             ,data: JSON.stringify(params)
             ,dataType: "json"
             ,success: function(result) {
-
+                //친구페이지 가져오기
+                friendsPage();
             },
 
             error: function(jqXHR,textStatus,errorThrown) {
@@ -1824,6 +1830,7 @@
                     var imgDiv = "";
                     var friendsId = result[i].friendsId;
                     var chatRoomIdx = result[i].chatRoomIdx;
+                    var idx = result[i].idx;
 
                     if(friendsProfileIdx == 0){
                         imgDiv = "<img class='avatar-img' src='/images/1.jpg' alt=''>";
@@ -1835,7 +1842,7 @@
 
                     appendHtml+= "<div class='card border-0'><div class='card-body'><div class='row align-items-center gx-5'><div class='col-auto'><a href='#' class='avatar '>"
                     +imgDiv
-                    +"</a></div><div class='col'><h5>"+friendsName+"</h5></div><div class='col-auto'><div class='dropdown'><a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg></a><ul class='dropdown-menu'><li><a class='dropdown-item' data-friendsId='"+friendsId+"' data-friendsName='"+friendsName+"' data-chatRoomIdx='"+chatRoomIdx+"' data-friendsIdx='"+friendsIdx+"' onclick='messageSend(this)'>메시지 보내기</a></li><li><hr class='dropdown-divider'></li><li><a class='dropdown-item text-danger blockUser' onclick='blockUserClick("+friendsIdx+")' href='#'>친구 차단</a></li></ul></div></div></div></div></div>";
+                    +"</a></div><div class='col'><h5>"+friendsName+"</h5></div><div class='col-auto'><div class='dropdown'><a class='icon text-muted' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-more-vertical'><circle cx='12' cy='12' r='1'></circle><circle cx='12' cy='5' r='1'></circle><circle cx='12' cy='19' r='1'></circle></svg></a><ul class='dropdown-menu'><li><a class='dropdown-item' data-friendsId='"+friendsId+"' data-friendsName='"+friendsName+"' data-chatRoomIdx='"+chatRoomIdx+"' data-friendsIdx='"+friendsIdx+"' onclick='messageSend(this)'>메시지 보내기</a></li><li><hr class='dropdown-divider'></li><li><a class='dropdown-item text-danger blockUser' onclick='blockUserClick("+idx+")' href='#'>친구 차단</a></li></ul></div></div></div></div></div>";
                 }
 
                  $("#friendsDiv").html(appendHtml);
@@ -1853,10 +1860,10 @@
         var confirmResult = confirm("정말로 회원을 탈퇴하시겠습니까? 탈퇴후 해당 정보는 삭제처리 됩니다.");
 
         if(confirmResult){
-            var userId = $("#userId").val();
+            var userIdx = $("#userIdx").val();
 
             var params = {
-                userId : userId
+                userIdx : userIdx
             }
 
             $.ajax({
@@ -1880,15 +1887,13 @@
     function messageSend(target){
 
         console.log(target);
-        var friendsId = $(target).attr("data-friendsId");
         var friendsName = $(target).attr("data-friendsName");
         var chatRoomIdx = $(target).attr("data-chatRoomIdx");
         var friendsIdx = $(target).attr("data-friendsIdx");
         var multiYn = "N";
 
         var params = {
-                 friendsId : friendsId
-                ,friendsName : friendsName
+                 friendsName : friendsName
                 ,chatRoomIdx : chatRoomIdx
                 ,friendsIdx : friendsIdx
                 ,multiYn : multiYn
@@ -1934,17 +1939,28 @@
 
           for(var i=0; i<result.length; i++){
 
-            var chatNickName = result[i].chatNickName
-            var chatContents = result[i].chatContents
-            var regDate = regDateFormat(result[i].regDate);
-            var chatRoomIdx = result[i].chatRoomIdx
+            var chatNickName = result[i].CHAT_ROOM_NAME
+            var chatContents = result[i].CHAT_CONTENTS
+            var regDate = regDateFormat(result[i].REG_DATE);
+            var chatRoomIdx = result[i].CHAT_ROOM_IDX
+            var chatProfileIdx = result[i].CHAT_PROFILE_IDX
+
+            var imgDiv = "";
+
+            if(chatProfileIdx == 0){
+                imgDiv = "<img src='/images/6.jpg' alt='#' class='avatar-img'>";
+            }
+
+            else{
+                imgDiv = "<img src='/api/img/print/"+chatProfileIdx+"' class='avatar-img'>";
+            }
 
             appendHtml += "<a href='/chat/"+chatRoomIdx+"?friendsName="+chatNickName+"' class='card border-0 text-reset'>"
                                     +"<div class='card-body'>"
                                         +"<div class='row gx-5'>"
                                             +"<div class='col-auto'>"
                                                 +"<div class='avatar avatar-online'>"
-                                                    +"<img src='/images/6.jpg' alt='#' class='avatar-img'>"
+                                                    +imgDiv
                                                 +"</div>"
                                             +"</div>"
 

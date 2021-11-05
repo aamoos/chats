@@ -12,6 +12,6 @@ import java.util.List;
 public interface UsersAuthorityRepository extends CrudRepository<UsersAuthority, Long> {
 
     //아이디로 검색
-    List<UsersAuthority> findByUserId(String userId);
+    List<UsersAuthority> findByUserIdx(Long userIdx);
 
 }

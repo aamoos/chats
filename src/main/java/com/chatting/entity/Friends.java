@@ -17,13 +17,13 @@ public class Friends {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long friendsIdx;
+    private Long idx;
 
     //친구 요청한 유저 idx
-    private String userId;
+    private Long userIdx;
 
     //친구 요청받은 유저 idx
-    private String friendsId;
+    private Long friendsIdx;
 
     //insert시에 현재시간을 읽어서 저장
     @CreationTimestamp
@@ -36,5 +36,7 @@ public class Friends {
     private String chatRoomIdx;
 
     private String token;
+
+    private String useYn;
 }
 

@@ -29,25 +29,18 @@ public class CustomUsersDetailService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        Users user = usersRepository.findByUserId(userId);
+        Users user = usersRepository.findByUserIdAndUseYn(userId, "Y");
 
         if (user == null){
             throw new UsernameNotFoundException(userId + "is not found. ");
         }
-        QuickGuideUser quickGuideUser = new QuickGuideUser();
-        quickGuideUser.setUsername(user.getUsername());
-        quickGuideUser.setPassword(user.getPassword());
-        quickGuideUser.setAuthorities(getAuthorities(userId));
-        quickGuideUser.setEnabled(true);
-        quickGuideUser.setAccountNonExpired(true);
-        quickGuideUser.setAccountNonLocked(true);
-        quickGuideUser.setCredentialsNonExpired(true);
 
-        return quickGuideUser;
+        return user;
     }
 
     public Collection<GrantedAuthority> getAuthorities(String username) {
-        List<UsersAuthority> authList = usersAuthorityRepository.findByUserId(username);
+        Users user = usersRepository.findByUserIdAndUseYn(username, "Y");
+        List<UsersAuthority> authList = usersAuthorityRepository.findByUserIdx(user.getUserIdx());
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (UsersAuthority authority : authList) {
             authorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
