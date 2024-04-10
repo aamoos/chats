@@ -1,12 +1,14 @@
-# chats
-> ## 개발환경
->> ### Spring Boot
->> ### JPA
->> ### Gradle
->> ### Thymeleaf
->> ### H2 Database
->> ### InteliJ
->> ### JDK 11
+# 만들게된 계기
+- 채팅프로그램을 만들어보고 싶어서 시작한 프로젝트
+
+# 개발환경
+- Spring Boot
+- JPA
+- Gradle
+- Thymeleaf
+- H2 Database
+- InteliJ
+- JDK 11
 
 # 프로젝트 설명
 > ### 채팅앱
