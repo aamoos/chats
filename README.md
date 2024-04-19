@@ -10,6 +10,7 @@
 - InteliJ
 - JDK 11
 - BOOTSTRAP
+- FIREBASE
 
 # 프로젝트 설명
 > ### 채팅앱
