@@ -9,6 +9,7 @@
 - H2 Database
 - InteliJ
 - JDK 11
+- BOOTSTRAP
 
 # 프로젝트 설명
 > ### 채팅앱
